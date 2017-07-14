@@ -44,8 +44,9 @@
 </style>
 <script>
   //  import Vue from 'vue'
-  //  import router from '../../router'
+  import router from '../../router'
   //  import store from '../../store/store'
+
   import axios from 'axios'
 
   export default{
@@ -84,54 +85,39 @@
           if (valid) {
 //            alert('submit!')
 
-            if (that.ruleForm.name === 'admin' && that.ruleForm.pass === '123') {
-              axios.request({
-                method: 'POST',
-                url: 'http://localhost:8181/login.jsp',
-                transformRequest: [(data) => {
-                  // Do whatever you want to transform the data
-                  let ret = ''
-                  for (let it in data) {
-                    ret += encodeURIComponent(it) + '=' + encodeURIComponent(data[it]) + '&'
-                  }
-                  return ret
-                }],
-                headers: {
-                  'Content-Type': 'application/x-www-form-urlencoded'
-                },
-                data: {
-                  'username': that.ruleForm.name,
-                  'password': that.ruleForm.pass
+            axios.request({
+              method: 'POST',
+              url: 'http://localhost:8181/login.jsp',
+              transformRequest: [(data) => {
+                // Do whatever you want to transform the data
+                let ret = ''
+                for (let it in data) {
+                  ret += encodeURIComponent(it) + '=' + encodeURIComponent(data[it]) + '&'
                 }
-              }).then(response => {
-                console.log(response.data)
-              }).catch(error => {
-                console.log(error)
-              })
-//              console.log(router)
-// http://localhost:5005/SubmitHandler.ashx
-//              Vue.axios({
-//                method: "POST",
-//                url: 'http://localhost:8181/login.jsp',
-//                responseType: 'json',
-//                data: {
-//                  'username': that.ruleForm.name,
-//                  'password': that.ruleForm.pass
-//                }
-//              }).then((response) => {
-//                console.log(response.data)
-//
-//                this.$message('登录成功！')
-//                store.commit('increment')
-//                console.log(store.state.count)
-//                router.push({path: '/'})
-//
-//              })
-            } else {
-              this.$message.error('用户名或密码错误')
-            }
+                return ret
+              }],
+              headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+              },
+              data: {
+                'username': that.ruleForm.name,
+                'password': that.ruleForm.pass
+              }
+            }).then(response => {
+              console.log(response.data)
+              let data = response.data
+              if (data.success) {
+                this.$store.state.user.name = data.user.name
+                this.$store.state.access_token = data.access_token
+//                this.$message.error(data.message)
+                router.push({path: '/'})
+              } else {
+                this.$message.error(data.message)
+              }
+            }).catch(error => {
+              console.log(error)
+            })
           } else {
-//            console.log('error submit!!')
             return false
           }
         })
