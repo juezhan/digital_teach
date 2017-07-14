@@ -278,6 +278,7 @@
     watch: {'$route': 'fetchdata'},
     methods: {
       fetchdata() {
+        console.log(this.$store.state.access_token)
         this.currName = this.$route.params.name || 'admin'
         this.currApp = this.$route.params.app
 
