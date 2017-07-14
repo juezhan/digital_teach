@@ -1,0 +1,736 @@
+{
+  "applications": [
+    {
+      "id": "admin",
+      "text": "系统应用",
+      "description": "",
+      "iconCls": "iconfont icon-admin",
+      "routeId": "",
+      "index": 0
+    },
+    {
+      "id": "common",
+      "text": "我的首页",
+      "description": "",
+      "iconCls": "iconfont icon-common-home",
+      "routeId": "",
+      "index": 0
+    },
+    {
+      "id": "oa",
+      "text": "办公自动化",
+      "description": "",
+      "iconCls": "iconfont icon-oa",
+      "routeId": "",
+      "index": 1
+    },
+    {
+      "id": "schedule",
+      "text": "计划任务",
+      "description": "",
+      "iconCls": "iconfont icon-schedule",
+      "routeId": "",
+      "index": 2
+    }
+  ],
+  "admin": [
+    {
+      "id": "permissionModule",
+      "text": "权限管理",
+      "description": "",
+      "iconCls": "iconfont icon-permission",
+      "routeId": "",
+      "index": 0,
+      "selectable": false,
+      "expanded": false,
+      "applicationId": "admin",
+      "children": [
+        {
+          "id": "userMenu",
+          "text": "用户管理",
+          "description": "",
+          "iconCls": "iconfont icon-user-management",
+          "routeId": "admin/User",
+          "index": 0,
+          "children": [],
+          "leaf": true
+        },
+        {
+          "id": "roleMenu",
+          "text": "角色管理",
+          "description": "",
+          "iconCls": "iconfont icon-role-management",
+          "routeId": "admin/Role",
+          "index": 1,
+          "children": [],
+          "leaf": true
+        },
+        {
+          "id": "workGroupMenu",
+          "text": "工作组管理",
+          "description": "",
+          "iconCls": "iconfont icon-workgroup-management",
+          "routeId": "admin/Workgroup",
+          "index": 2,
+          "children": [],
+          "leaf": true
+        }
+      ]
+    },
+    {
+      "id": "constructModule",
+      "text": "组织机构",
+      "description": "",
+      "iconCls": "iconfont icon-organization",
+      "routeId": "",
+      "index": 5,
+      "selectable": false,
+      "expanded": false,
+      "applicationId": "admin",
+      "children": [
+        {
+          "id": "orgChartMenu",
+          "text": "组织机构图",
+          "description": "",
+          "iconCls": "iconfont icon-organization-chart",
+          "routeId": "admin/Orgchart",
+          "index": 0,
+          "children": [],
+          "leaf": true
+        },
+        {
+          "id": "organizationMenu",
+          "text": "机构管理",
+          "description": "",
+          "iconCls": "iconfont icon-organization-management",
+          "routeId": "admin/Org",
+          "index": 20,
+          "children": [],
+          "leaf": true
+        },
+        {
+          "id": "dutyMenu",
+          "text": "职务管理",
+          "description": "",
+          "iconCls": "iconfont icon-duty-management",
+          "routeId": "admin/Duty",
+          "index": 40,
+          "children": [],
+          "leaf": true
+        },
+        {
+          "id": "organizationUserMenu",
+          "text": "机构人员管理",
+          "description": "",
+          "iconCls": "iconfont icon-role-management",
+          "routeId": "admin/OrgUser",
+          "index": 50,
+          "children": [],
+          "leaf": true
+        }
+      ]
+    },
+    {
+      "id": "sysModule",
+      "text": "系统管理",
+      "description": "",
+      "iconCls": "iconfont icon-system",
+      "routeId": "",
+      "index": 10,
+      "selectable": false,
+      "expanded": false,
+      "applicationId": "admin",
+      "children": [
+        {
+          "id": "applicationMenu",
+          "text": "应用管理",
+          "description": "",
+          "iconCls": "iconfont icon-application-management",
+          "routeId": "admin/Application",
+          "index": 0,
+          "children": [],
+          "leaf": true
+        },
+        {
+          "id": "functionMenu",
+          "text": "功能管理",
+          "description": "",
+          "iconCls": "iconfont icon-function-management",
+          "routeId": "admin/Function",
+          "index": 10,
+          "children": [],
+          "leaf": true
+        },
+        {
+          "id": "dictMenu",
+          "text": "字典管理",
+          "description": "",
+          "iconCls": "iconfont icon-dict-management",
+          "routeId": "admin/AdminDict",
+          "index": 20,
+          "children": [],
+          "leaf": true
+        },
+        {
+          "id": "auditMenu",
+          "text": "审计管理",
+          "description": "",
+          "iconCls": "iconfont icon-operation-management",
+          "routeId": "sys/Audit",
+          "index": 30,
+          "children": [],
+          "leaf": true
+        },
+        {
+          "id": "auditconfigMenu",
+          "text": "审计配置管理",
+          "description": "",
+          "iconCls": "iconfont icon-config",
+          "routeId": "sys/auditconfig",
+          "index": 40,
+          "children": [],
+          "leaf": true
+        },
+        {
+          "id": "statemachineMenu",
+          "text": "状态机管理",
+          "description": "",
+          "iconCls": "iconfont icon-system-statemachine",
+          "routeId": "admin/statemachine",
+          "index": 50,
+          "children": [],
+          "leaf": true
+        },
+        {
+          "id": "templateMenu",
+          "text": "模板管理",
+          "description": "",
+          "iconCls": "iconfont icon-operation-management",
+          "routeId": "sys/Template",
+          "index": 50,
+          "children": [],
+          "leaf": true
+        }
+      ]
+    }
+  ],
+  "common": [
+    {
+      "id": "noticeModule",
+      "text": "新闻公告",
+      "description": "",
+      "iconCls": "iconfont icon-common-both",
+      "routeId": "",
+      "index": 10,
+      "selectable": false,
+      "expanded": false,
+      "applicationId": "common",
+      "children": [
+        {
+          "id": "newsMenu",
+          "text": "公司新闻",
+          "description": "",
+          "iconCls": "iconfont icon-common-news",
+          "routeId": "common/news",
+          "index": 10,
+          "children": [],
+          "leaf": true
+        },
+        {
+          "id": "noteMenu",
+          "text": "公司公告",
+          "description": "",
+          "iconCls": "iconfont icon-common-notice",
+          "routeId": "common/note",
+          "index": 20,
+          "children": [],
+          "leaf": true
+        }
+      ]
+    },
+    {
+      "id": "myMessageModule",
+      "text": "消息通知",
+      "description": "",
+      "iconCls": "iconfont icon-message",
+      "routeId": "",
+      "index": 20,
+      "selectable": false,
+      "expanded": false,
+      "applicationId": "common",
+      "children": [
+        {
+          "id": "senderMsgMenu",
+          "text": "发件箱",
+          "description": "",
+          "iconCls": "iconfont icon-outbox",
+          "routeId": "message/sender",
+          "index": 10,
+          "children": [],
+          "leaf": true
+        },
+        {
+          "id": "receiverMsgMenu",
+          "text": "收件箱",
+          "description": "",
+          "iconCls": "iconfont icon-inbox",
+          "routeId": "message/receiver",
+          "index": 20,
+          "children": [],
+          "leaf": true
+        }
+      ]
+    },
+    {
+      "id": "commonSystemModule",
+      "text": "系统管理",
+      "description": "",
+      "iconCls": "iconfont icon-system",
+      "routeId": "",
+      "index": 40,
+      "selectable": false,
+      "expanded": false,
+      "applicationId": "common",
+      "children": [
+        {
+          "id": "commonDictMenu",
+          "text": "字典管理",
+          "description": "",
+          "iconCls": "iconfont icon-dict-management",
+          "routeId": "common/commonDict",
+          "index": 20,
+          "children": [],
+          "leaf": true
+        }
+      ]
+    }
+  ],
+  "oa": [
+    {
+      "id": "workFlowBizModule",
+      "text": "业务流程",
+      "description": "",
+      "iconCls": "iconfont icon-process-definition",
+      "routeId": "",
+      "index": 0,
+      "selectable": false,
+      "expanded": false,
+      "applicationId": "oa",
+      "children": [
+        {
+          "id": "mainWorkFlowMenu",
+          "text": "流程申请",
+          "description": "",
+          "iconCls": "iconfont icon-process-apply",
+          "routeId": "workflow/MainWork",
+          "index": 0,
+          "children": [],
+          "leaf": true
+        },
+        {
+          "id": "recruitApplyMenu",
+          "text": "用工申请",
+          "description": "",
+          "iconCls": "iconfont icon-recruit",
+          "routeId": "workflow/RecruitApply",
+          "index": 10,
+          "children": [],
+          "leaf": true
+        },
+        {
+          "id": "employApplyMenu",
+          "text": "入职申请",
+          "description": "",
+          "iconCls": "iconfont icon-employ",
+          "routeId": "workflow/EmployApply",
+          "index": 20,
+          "children": [],
+          "leaf": true
+        },
+        {
+          "id": "meetingApplyMenu",
+          "text": "会议申请",
+          "description": "",
+          "iconCls": "iconfont icon-meeting-apply",
+          "routeId": "workflow/MeetingApply",
+          "index": 30,
+          "children": [],
+          "leaf": true
+        },
+        {
+          "id": "meetingRoomApplyMenu",
+          "text": "会议室申请",
+          "description": "",
+          "iconCls": "iconfont icon-meeting-room-apply",
+          "routeId": "workflow/MeetingRoomApply",
+          "index": 40,
+          "children": [],
+          "leaf": true
+        },
+        {
+          "id": "sealApplyMenu",
+          "text": "印章使用申请",
+          "description": "",
+          "iconCls": "iconfont icon-seal",
+          "routeId": "workflow/SealApply",
+          "index": 50,
+          "children": [],
+          "leaf": true
+        },
+        {
+          "id": "carApplyMenu",
+          "text": "公务用车申请",
+          "description": "",
+          "iconCls": "iconfont icon-public-car",
+          "routeId": "workflow/CarApply",
+          "index": 60,
+          "children": [],
+          "leaf": true
+        },
+        {
+          "id": "evectionApplyMenu",
+          "text": "出差申请",
+          "description": "",
+          "iconCls": "iconfont icon-evection",
+          "routeId": "workflow/EvectionApply",
+          "index": 70,
+          "children": [],
+          "leaf": true
+        },
+        {
+          "id": "reimbursementApplyMenu",
+          "text": "报销申请",
+          "description": "",
+          "iconCls": "iconfont icon-workflow-reimbursement",
+          "routeId": "workflow/ReimbursementApply",
+          "index": 80,
+          "children": [],
+          "leaf": true
+        }
+      ]
+    },
+    {
+      "id": "myWorkingModule",
+      "text": "个人办公",
+      "description": "",
+      "iconCls": "iconfont icon-work",
+      "routeId": "",
+      "index": 10,
+      "selectable": false,
+      "expanded": false,
+      "applicationId": "oa",
+      "children": [
+        {
+          "id": "taskMenu",
+          "text": "待办流程",
+          "description": "",
+          "iconCls": "iconfont icon-task",
+          "routeId": "workflow/Task",
+          "index": 0,
+          "children": [],
+          "leaf": true
+        },
+        {
+          "id": "myProcessHistoryMenu",
+          "text": "我的流程",
+          "description": "",
+          "iconCls": "iconfont icon-history",
+          "routeId": "workflow/Myprocesshistory",
+          "index": 20,
+          "children": [],
+          "leaf": true
+        },
+        {
+          "id": "myInvolvedProcessHistoryMenu",
+          "text": "我参与的流程",
+          "description": "",
+          "iconCls": "iconfont icon-involved-history",
+          "routeId": "workflow/Myinvolvedprocesshistory",
+          "index": 25,
+          "children": [],
+          "leaf": true
+        },
+        {
+          "id": "CandidateMenu",
+          "text": "应聘人员管理",
+          "description": "",
+          "iconCls": "iconfont icon-candidate",
+          "routeId": "usecase/Candidate",
+          "index": 30,
+          "children": [],
+          "leaf": true
+        },
+        {
+          "id": "InterviewMenu",
+          "text": "面试管理",
+          "description": "",
+          "iconCls": "iconfont icon-interview",
+          "routeId": "usecase/Interview",
+          "index": 40,
+          "children": [],
+          "leaf": true
+        },
+        {
+          "id": "LectureMenu",
+          "text": "试讲管理",
+          "description": "",
+          "iconCls": "iconfont icon-lecture",
+          "routeId": "usecase/Lecture",
+          "index": 50,
+          "children": [],
+          "leaf": true
+        }
+      ]
+    },
+    {
+      "id": "workFlowModule",
+      "text": "流程管理",
+      "description": "",
+      "iconCls": "iconfont icon-process",
+      "routeId": "",
+      "index": 30,
+      "selectable": false,
+      "expanded": false,
+      "applicationId": "oa",
+      "children": [
+        {
+          "id": "categoryMenu",
+          "text": "流程分类管理",
+          "description": "",
+          "iconCls": "iconfont icon-category",
+          "routeId": "workflow/category",
+          "index": 0,
+          "children": [],
+          "leaf": true
+        },
+        {
+          "id": "processDefinitionMenu",
+          "text": "流程定义管理",
+          "description": "",
+          "iconCls": "iconfont icon-process-definition-management",
+          "routeId": "workflow/Processdefinition",
+          "index": 10,
+          "children": [],
+          "leaf": true
+        },
+        {
+          "id": "processHistoryMenu",
+          "text": "流程历史",
+          "description": "",
+          "iconCls": "iconfont icon-history",
+          "routeId": "workflow/Processhistory",
+          "index": 20,
+          "children": [],
+          "leaf": true
+        }
+      ]
+    },
+    {
+      "id": "oaSystemModule",
+      "text": "系统管理",
+      "description": "",
+      "iconCls": "iconfont icon-system",
+      "routeId": "",
+      "index": 40,
+      "selectable": false,
+      "expanded": false,
+      "applicationId": "oa",
+      "children": [
+        {
+          "id": "MeetingroomMenu",
+          "text": "会议室管理",
+          "description": "",
+          "iconCls": "iconfont icon-meeting-room",
+          "routeId": "system/Meetingroom",
+          "index": 10,
+          "children": [],
+          "leaf": true
+        },
+        {
+          "id": "OAdictMenu",
+          "text": "字典管理",
+          "description": "",
+          "iconCls": "iconfont icon-dict-management",
+          "routeId": "oa/OADict",
+          "index": 20,
+          "children": [],
+          "leaf": true
+        }
+      ]
+    }
+  ],
+  "schedule": [
+    {
+      "id": "planManagerModule",
+      "text": "计划管理",
+      "description": "",
+      "iconCls": "iconfont icon-schedule-planmanager",
+      "routeId": "",
+      "index": 10,
+      "selectable": false,
+      "expanded": false,
+      "applicationId": "schedule",
+      "children": [
+        {
+          "id": "personalPlanMenu",
+          "text": "个人计划",
+          "description": "",
+          "iconCls": "iconfont icon-schedule-planmanager-personal",
+          "routeId": "plan/personalplan",
+          "index": 10,
+          "children": [],
+          "leaf": true
+        },
+        {
+          "id": "departmentPlanMenu",
+          "text": "部门计划",
+          "description": "",
+          "iconCls": "iconfont icon-schedule-planmanager-department",
+          "routeId": "plan/departmentplan",
+          "index": 20,
+          "children": [],
+          "leaf": true
+        },
+        {
+          "id": "WorkReportMenu",
+          "text": "工作汇报",
+          "description": "",
+          "iconCls": "iconfont icon-schedule-workreport",
+          "routeId": "plan/workreport",
+          "index": 30,
+          "children": [],
+          "leaf": true
+        },
+        {
+          "id": "WorkSummaryMenu",
+          "text": "工作总结",
+          "description": "",
+          "iconCls": "iconfont icon-schedule-worksummary",
+          "routeId": "plan/worksummary",
+          "index": 40,
+          "children": [],
+          "leaf": true
+        },
+        {
+          "id": "TemplateMenu",
+          "text": "计划模板",
+          "description": "",
+          "iconCls": "iconfont icon-schedule-template",
+          "routeId": "schedule/template",
+          "index": 50,
+          "children": [],
+          "leaf": true
+        }
+      ]
+    },
+    {
+      "id": "taskManagerModule",
+      "text": "任务管理",
+      "description": "",
+      "iconCls": "iconfont icon-schedule-taskmanager",
+      "routeId": "",
+      "index": 20,
+      "selectable": false,
+      "expanded": false,
+      "applicationId": "schedule",
+      "children": [
+        {
+          "id": "assignmentMenu",
+          "text": "布置任务",
+          "description": "",
+          "iconCls": "iconfont icon-schedule-task-assignment",
+          "routeId": "task/assignment",
+          "index": 30,
+          "children": [],
+          "leaf": true
+        }
+      ]
+    },
+    {
+      "id": "statisticsQueryModule",
+      "text": "统计查询",
+      "description": "",
+      "iconCls": "iconfont icon-schedule-statisticsquery",
+      "routeId": "",
+      "index": 30,
+      "selectable": false,
+      "expanded": false,
+      "applicationId": "schedule",
+      "children": [
+        {
+          "id": "PersonalPlanSearchMenu",
+          "text": "个人计划查询",
+          "description": "",
+          "iconCls": "iconfont icon-schedule-personalplansearch",
+          "routeId": "plan/personalplansearch",
+          "index": 10,
+          "children": [],
+          "leaf": true
+        },
+        {
+          "id": "DepartmentPlanSearchMenu",
+          "text": "部门计划查询",
+          "description": "",
+          "iconCls": "iconfont icon-schedule-departmentplansearch",
+          "routeId": "plan/departmentplansearch",
+          "index": 20,
+          "children": [],
+          "leaf": true
+        },
+        {
+          "id": "WorkReportSearchMenu",
+          "text": "工作汇报查询",
+          "description": "",
+          "iconCls": "iconfont icon-schedule-workreportsearch",
+          "routeId": "plan/workreportsearch",
+          "index": 30,
+          "children": [],
+          "leaf": true
+        },
+        {
+          "id": "WorkSummarySearchMenu",
+          "text": "工作总结查询",
+          "description": "",
+          "iconCls": "iconfont icon-schedule-worksummarysearch",
+          "routeId": "plan/worksummarysearch",
+          "index": 40,
+          "children": [],
+          "leaf": true
+        },
+        {
+          "id": "assignmentChartsMenu",
+          "text": "任务统计",
+          "description": "",
+          "iconCls": "iconfont icon-schedule-task-assignment",
+          "routeId": "task/assignmentcharts",
+          "index": 50,
+          "children": [],
+          "leaf": true
+        }
+      ]
+    },
+    {
+      "id": "scheduleSystemModule",
+      "text": "系统管理",
+      "description": "",
+      "iconCls": "iconfont icon-system",
+      "routeId": "",
+      "index": 40,
+      "selectable": false,
+      "expanded": false,
+      "applicationId": "schedule",
+      "children": [
+        {
+          "id": "scheduleDictMenu",
+          "text": "字典管理",
+          "description": "",
+          "iconCls": "iconfont icon-dict-management",
+          "routeId": "schedule/ScheduleDict",
+          "index": 10,
+          "children": [],
+          "leaf": true
+        }
+      ]
+    }
+  ]
+}
