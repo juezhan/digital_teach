@@ -2,11 +2,13 @@
   <div id="myDiv">
     <label><input type="checkbox" :value="value"/><i></i>{{text}}</label>
   </div>
-</template>
+</template>.
+
 <style lang="scss" type="text/scss">
   #myDiv {
   }
 </style>
+
 <script>
   export default{
     props: {
@@ -20,10 +22,10 @@
       },
       isChecked: {
         default: false,
-        tyle: Boolean
+        type: Boolean
       }
     },
-    data(){
+    data() {
       return {
         name: 'Compomnents Name'
       }
