@@ -86,7 +86,7 @@
               axios.request({
                 method: "POST",
                 url: 'http://localhost:8181/login.jsp',
-                transformRequest: [function (data) {
+                transformRequest: [(data) => {
                   // Do whatever you want to transform the data
                   let ret = ''
                   for (let it in data) {
@@ -103,6 +103,8 @@
                 }
               }).then(response => {
                 console.log(response.data);
+              }).catch(error => {
+                console.log(error);
               });
 //              console.log(router)
 //http://localhost:5005/SubmitHandler.ashx
