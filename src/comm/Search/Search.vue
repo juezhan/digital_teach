@@ -29,8 +29,8 @@
       border: 1px solid $border-color_1;
       font-size: 0;
       padding: 5px 15px;
-      button{
-        .iconfont{
+      button {
+        .iconfont {
           font-size: 14px;
         }
       }
@@ -49,26 +49,26 @@
         default: null
       }
     },
-    data(){
+    data() {
       return {
         name: 'Compomnents Name'
       }
     },
-    mounted(){
+    mounted() {
 //      console.log(this.formInputs);
     },
     methods: {
-      reset(){
-        console.log('Reset');
+      reset() {
+        console.log('Reset')
       },
-      query(){
-        let that = this, result = new Object();
-
+      query() {
+        let that = this
+        let result = {}
         that.formInputs.forEach(function (e, i) {
-          result[e.itemName] = that.$refs[e.itemName][0].getValue();
-        });
+          result[e.itemName] = that.$refs[e.itemName][0].getValue()
+        })
 
-        that.$emit('getRescult', result);
+        that.$emit('getRescult', result)
       }
     },
     components: {},

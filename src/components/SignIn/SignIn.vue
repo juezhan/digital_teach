@@ -1,3 +1,8 @@
+<!--
+描述：
+开发人：
+开发日期：
+-->
 <template>
   <div class="sign-in">
     <div class="form">
@@ -38,22 +43,20 @@
   }
 </style>
 <script>
-
-  import Vue from 'vue';
-  import router from '../../router';
-  import store from '../../store/store';
+  //  import Vue from 'vue'
+  //  import router from '../../router'
+  //  import store from '../../store/store'
   import axios from 'axios'
 
   export default{
-    data(){
-
+    data() {
       var validatePass = (rule, value, callback) => {
         if (value === '') {
-          callback(new Error('请输入密码'));
+          callback(new Error('请输入密码'))
         } else {
-          callback();
+          callback()
         }
-      };
+      }
 
       return {
         name: 'Compomnents Name',
@@ -73,18 +76,17 @@
       }
     },
     methods: {
-      onSubmit(formName){
-        let that = this;
-//        console.log(store.state.count);
+      onSubmit(formName) {
+        let that = this
+//        console.log(store.state.count)
 
         this.$refs[formName].validate((valid) => {
           if (valid) {
-//            alert('submit!');
+//            alert('submit!')
 
-            if (that.ruleForm.name == 'admin' && that.ruleForm.pass == '123') {
-
+            if (that.ruleForm.name === 'admin' && that.ruleForm.pass === '123') {
               axios.request({
-                method: "POST",
+                method: 'POST',
                 url: 'http://localhost:8181/login.jsp',
                 transformRequest: [(data) => {
                   // Do whatever you want to transform the data
@@ -102,12 +104,12 @@
                   'password': that.ruleForm.pass
                 }
               }).then(response => {
-                console.log(response.data);
+                console.log(response.data)
               }).catch(error => {
-                console.log(error);
-              });
+                console.log(error)
+              })
 //              console.log(router)
-//http://localhost:5005/SubmitHandler.ashx
+// http://localhost:5005/SubmitHandler.ashx
 //              Vue.axios({
 //                method: "POST",
 //                url: 'http://localhost:8181/login.jsp',
@@ -117,26 +119,26 @@
 //                  'password': that.ruleForm.pass
 //                }
 //              }).then((response) => {
-//                console.log(response.data);
+//                console.log(response.data)
 //
-//                this.$message('登录成功！');
-//                store.commit('increment');
-//                console.log(store.state.count);
-//                router.push({path: '/'});
+//                this.$message('登录成功！')
+//                store.commit('increment')
+//                console.log(store.state.count)
+//                router.push({path: '/'})
 //
-//              });
+//              })
             } else {
-              this.$message.error('用户名或密码错误');
+              this.$message.error('用户名或密码错误')
             }
-
           } else {
-//            console.log('error submit!!');
-            return false;
+//            console.log('error submit!!')
+            return false
           }
-        });
+        })
       }
     },
     components: {},
     computed: {}
   }
 </script>
+

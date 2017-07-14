@@ -9,6 +9,7 @@
     </div>
   </div>
 </template>
+
 <style lang="scss" type="text/scss">
   #home {
     .container {
@@ -23,46 +24,43 @@
     }
   }
 </style>
+
 <script>
-  import Vue from 'vue';
+  import TreeList from '../TreeList/TreeList.vue'
+  import ToolBar from '../ToolBar/ToolBar.vue'
 
-  import TreeList from '../TreeList/TreeList.vue';
-  import ToolBar from '../ToolBar/ToolBar.vue';
-
-  import Welcome from '../Welcome/Welcome.vue';
-  import User from '../Admin/User/User.vue';
-  import Role from '../Admin/Role/Role.vue';
-
-  import data from '../../../util/mock';
+  import Welcome from '../Welcome/Welcome.vue'
+  import User from '../Admin/User/User.vue'
+  import Role from '../Admin/Role/Role.vue'
+  //  import data from '../../../util/mock'
 
   let _components = {
     ToolBar,
     TreeList,
     Welcome,
     User,
-    Role,
+    Role
   }
 
   export default{
-    data(){
+    data() {
       return {
         name: 'Compomnents Name',
         isSmail: false,
-        which_to_show: "Welcome"
+        which_to_show: 'Welcome'
       }
     },
-    mounted(){
-      this.fetchdata();
+    mounted() {
+      this.fetchdata()
     },
     watch: {'$route': 'fetchdata'},
     methods: {
-      setSmail(e){
-        this.isSmail = e;
+      setSmail(e) {
+        this.isSmail = e
       },
-      fetchdata(){
-
-        let app = this.$route.params.app;
-        this.which_to_show = (_components[app]) ? app : 'Welcome';
+      fetchdata() {
+        let app = this.$route.params.app
+        this.which_to_show = (_components[app]) ? app : 'Welcome'
 
 //        mock 跨域
 //        Vue.axios.get('http://localhost:3003/news').then((response) => {

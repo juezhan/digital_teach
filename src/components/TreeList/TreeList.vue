@@ -99,14 +99,14 @@
   }
 </style>
 <script>
-  import Vue from 'vue';
+  import Vue from 'vue'
   export default{
     props: {
       menuChk: {
-        default: false,
+        default: false
       }
     },
-    data(){
+    data() {
       return {
         name: 'Compomnents Name',
         currName: '',
@@ -242,7 +242,7 @@
             'routeName': ''
           },
           {'name': '任务统计', 'parentId': 13, 'id': 50, 'icon': 'iconfont icon-schedule-task-assignment', 'routeName': ''},
-          {'name': '字典管理', 'parentId': 14, 'id': 51, 'icon': 'iconfont icon-dict-management', 'routeName': ''},
+          {'name': '字典管理', 'parentId': 14, 'id': 51, 'icon': 'iconfont icon-dict-management', 'routeName': ''}
 
         ],
         obj: {'name': 'aa'},
@@ -250,76 +250,76 @@
           admin: [
             {'name': '权限管理', 'id': 1, 'icon': 'iconfont icon-permission', 'routeName': ''},
             {'name': '组织机构', 'id': 2, 'icon': 'iconfont icon-organization', 'routeName': ''},
-            {'name': '系统管理', 'id': 3, 'icon': 'iconfont icon-system', 'routeName': ''},
+            {'name': '系统管理', 'id': 3, 'icon': 'iconfont icon-system', 'routeName': ''}
           ],
           common: [
             {'name': '新闻公告', 'id': 4, 'icon': 'iconfont icon-common-both', 'routeName': ''},
             {'name': '消息通知', 'id': 5, 'icon': 'iconfont icon-message', 'routeName': ''},
-            {'name': '系统管理', 'id': 6, 'icon': 'iconfont icon-system', 'routeName': ''},
+            {'name': '系统管理', 'id': 6, 'icon': 'iconfont icon-system', 'routeName': ''}
           ],
           oa: [
             {'name': '业务流程', 'id': 7, 'icon': 'iconfont icon-process-definition', 'routeName': ''},
             {'name': '个人办公', 'id': 8, 'icon': 'iconfont icon-work', 'routeName': ''},
             {'name': '流程管理', 'id': 9, 'icon': 'iconfont icon-process', 'routeName': ''},
-            {'name': '系统管理', 'id': 10, 'icon': 'iconfont icon-system', 'routeName': ''},
+            {'name': '系统管理', 'id': 10, 'icon': 'iconfont icon-system', 'routeName': ''}
           ],
           schedule: [
             {'name': '计划管理', 'id': 11, 'icon': 'iconfont icon-schedule-planmanager', 'routeName': ''},
             {'name': '任务管理', 'id': 12, 'icon': 'iconfont icon-schedule-taskmanager', 'routeName': ''},
             {'name': '统计查询', 'id': 13, 'icon': 'iconfont icon-schedule-statisticsquery', 'routeName': ''},
-            {'name': '系统管理', 'id': 14, 'icon': 'iconfont icon-system', 'routeName': ''},
-          ],
+            {'name': '系统管理', 'id': 14, 'icon': 'iconfont icon-system', 'routeName': ''}
+          ]
         }
       }
     },
-    mounted(){
-      this.fetchdata();
+    mounted() {
+      this.fetchdata()
     },
     watch: {'$route': 'fetchdata'},
     methods: {
-      fetchdata(){
-        this.currName = this.$route.params.name || 'admin';
-        this.currApp = this.$route.params.app;
+      fetchdata() {
+        this.currName = this.$route.params.name || 'admin'
+        this.currApp = this.$route.params.app
 
         Vue.axios.get('/api/' + this.currName).then((response) => {
-          if (response.data.erron == 0) {
-            this.treeData = response.data.data;
+          if (response.data.erron === 0) {
+            this.treeData = response.data.data
             this.treeData.forEach(function (e, i) {
-              Vue.set(e, 'isShow', false);
-            });
+              Vue.set(e, 'isShow', false)
+            })
           }
-        });
+        })
       },
-      setShow(item){
-        let routeName = this.currName + '/' + this.currApp;
+      setShow(item) {
+        let routeName = this.currName + '/' + this.currApp
         if (item.children) {
           let temp = item.children.find(function (e) {
-            return e.routeId == routeName;
-          });
-          return temp != null || item.isShow;
+            return e.routeId === routeName
+          })
+          return temp != null || item.isShow
         } else {
-          return false;
+          return false
         }
       },
-      bindTree(_id){
+      bindTree(_id) {
         return this.treeData_2.filter(function (item) {
-          return item.parentId == _id;
-        });
+          return item.parentId === _id
+        })
       },
-      bindClass(e){
-        return e;
+      bindClass(e) {
+        return e
       },
-      showTree(e){
+      showTree(e) {
         let _item = (this.treeData.filter(function (item) {
-          if (item != e) {
+          if (item !== e) {
             item.isShow = false
           } else {
-            return e;
+            return e
           }
-        }))[0];
-        e.isShow = !_item.isShow;
+        }))[0]
+        e.isShow = !_item.isShow
       },
-      showIcon(e){
+      showIcon(e) {
         return e ? 'el-icon-caret-bottom' : 'el-icon-caret-right'
       }
     },

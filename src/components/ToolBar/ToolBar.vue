@@ -49,6 +49,7 @@
     </div>
   </div>
 </template>
+
 <style lang="scss" type="text/scss">
   #ToolBar {
     position: fixed;
@@ -107,15 +108,16 @@
     }
   }
 </style>
+
 <script>
-  import  Vue from  'vue';
+  import Vue from 'vue'
   export default{
     props: {
       menuChk: {
-        default: false,
+        default: false
       }
     },
-    data(){
+    data() {
       return {
         name: 'Compomnents Name',
         menuList: [],
@@ -130,28 +132,27 @@
         themeValue: '浅蓝'
       }
     },
-    mounted(){
+    mounted () {
 //      this.menuList
       Vue.axios.get('/api/applications').then((response) => {
-        if (response.data.erron == 0) {
-          this.menuList = response.data.data;
+        if (response.data.erron === 0) {
+          this.menuList = response.data.data
         }
-      });
-
+      })
     },
     methods: {
-      handleCommand(){
+      handleCommand () {
       },
-      bindClass(e){
-        return e;
+      bindClass (e) {
+        return e
       },
-      menuChkChange(){
-        this.$emit('setSmail', this.menuChk);
+      menuChkChange () {
+        this.$emit('setSmail', this.menuChk)
       }
     },
     components: {},
     computed: {
-      classObject(e){
+      classObject(e) {
         return {
           'iconfont': true
         }

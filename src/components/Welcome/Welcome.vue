@@ -9,18 +9,18 @@
 </style>
 <script>
   export default{
-    data(){
+    data() {
       return {
         name: ''
       }
     },
-    mounted(){
-      this.fetchdata();
+    mounted() {
+      this.fetchdata()
     },
     watch: {'$route': 'fetchdata'},
     methods: {
-      fetchdata(){
-        this.name = this.$route.params.name;
+      fetchdata() {
+        this.name = this.$route.params.name
 //        console.log(this.$route.params.name);
       }
     },

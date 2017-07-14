@@ -47,26 +47,26 @@
         default: null
       }
     },
-    data(){
+    data() {
       return {
         name: 'Compomnents Name',
         inputValue: ''
       }
     },
-    updated(){
+    updated() {
 //      console.log('updated');
-      this.inputValue = this.inputValue || this.itemCell.defaultValue;
+      this.inputValue = this.inputValue || this.itemCell.defaultValue
     },
-    activated(){
+    activated() {
 //      console.log('activated');
     },
-    mounted(){
+    mounted() {
 //      console.log('mounted');
     },
     methods: {
-      getValue(){
+      getValue() {
 //          console.log('getValue')
-        return this.inputValue;
+        return this.inputValue
       }
     },
     components: {},

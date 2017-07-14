@@ -17,9 +17,9 @@
   }
 </style>
 <script>
-  import Vue from 'vue';
+  import Vue from 'vue'
   export default{
-    data(){
+    data() {
       return {
         name: 'Role',
         options: [],
@@ -31,15 +31,15 @@
         }
       }
     },
-    mounted(){
+    mounted() {
       Vue.axios.get('http://test.cn/options').then(response => {
-        this.options = response.data.data;
-        console.log(this.options);
-      });
+        this.options = response.data.data
+        console.log(this.options)
+      })
     },
     methods: {
       handleChange(value) {
-        console.log(value);
+        console.log(value)
       }
     },
     components: {},

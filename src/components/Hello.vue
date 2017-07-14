@@ -71,23 +71,23 @@
     },
     methods: {
       handleIconClick(ev) {
-        console.log(ev);
+        console.log(ev)
       },
-      dialogFormCancel(){
+      dialogFormCancel() {
         this.$message({
           showClose: true,
           message: '取消',
           type: 'warning'
-        });
-        this.dialogFormVisible = false;
+        })
+        this.dialogFormVisible = false
       },
-      dialogFormConfirm(){
+      dialogFormConfirm() {
         this.$message({
           showClose: true,
           message: '确定',
           type: 'success'
-        });
-        this.dialogFormVisible = false;
+        })
+        this.dialogFormVisible = false
       }
     }
   }
