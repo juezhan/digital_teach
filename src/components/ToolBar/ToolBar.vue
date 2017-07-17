@@ -1,3 +1,8 @@
+<!--
+描述：顶部导航
+开发人：桑杨
+开发日期：2017年7月17日
+-->
 <template>
   <div id="ToolBar">
     <div class="s-flex bd">
@@ -50,7 +55,7 @@
   </div>
 </template>
 
-<style lang="scss" type="text/scss">
+<style scoped lang="scss" type="text/scss">
   #ToolBar {
     position: fixed;
     top: 0;
@@ -111,6 +116,8 @@
 
 <script>
   import Vue from 'vue'
+  import {CacheTime, RequestApi} from '../../api/config'
+
   export default{
     props: {
       menuChk: {
@@ -133,12 +140,34 @@
       }
     },
     mounted () {
-//      this.menuList
-      Vue.axios.get('/api/applications').then((response) => {
-        if (response.data.erron === 0) {
-          this.menuList = response.data.data
+      let d = new Date()
+      let cd = d.getTime()
+      let toolListData = {}
+
+      if (localStorage.getItem('toolListData')) {
+        toolListData = JSON.parse(localStorage.getItem('toolListData'))
+      }
+      if (toolListData.createDate && (toolListData.createDate - cd) < CacheTime && toolListData.data) {
+        this.menuList = toolListData.data
+      } else {
+        const accessToken = sessionStorage.getItem('access_token')
+        const data = {
+          _dc: cd,
+          page: 1,
+          start: 0,
+          limit: 25
         }
-      })
+        Vue.axios.get(RequestApi.SystemApplication, {
+          headers: {access_token: accessToken},
+          params: data
+        }).then(response => {
+          this.menuList = response.data
+          let nowDate = new Date()
+          toolListData.data = this.menuList
+          toolListData.createDate = nowDate.getTime()
+          localStorage.setItem('toolListData', JSON.stringify(toolListData))
+        })
+      }
     },
     methods: {
       handleCommand () {

@@ -2,11 +2,8 @@
  * Created by Administrator on 2017/7/6.
  */
 
-import Mock from 'mockjs';
-let Random = Mock.Random;
-let images = function () {
-
-};
+import Mock from "mockjs";
+let Random = Mock.Random
 
 let add = Mock.mock('http://test.cn/add', {
   'data|5': [{
@@ -15,7 +12,7 @@ let add = Mock.mock('http://test.cn/add', {
     'relevant': '@cname',
     'image': Random.image('200x200', Random.color(), Random.cword())
   }]
-});
+})
 
 let list = Mock.mock('http://test.cn/list', {
   'data|10': [{
@@ -24,7 +21,7 @@ let list = Mock.mock('http://test.cn/list', {
     'relevant': '@cname',
     'image': Random.image('200x200', Random.color(), Random.cword())
   }]
-});
+})
 
 let usersList = Mock.mock('http://test.cn/userlist', {
   'data|20': [{
@@ -39,14 +36,14 @@ let usersList = Mock.mock('http://test.cn/userlist', {
     'image': Random.image('200x200', Random.color(), Random.cword()),
     'address': '@county(true)'
   }]
-});
+})
 
 let options = Mock.mock('http://test.cn/options', {
   'data|5': [{
     'id|+1': 1,
-    'label': '@province',
+    'label': '@province'
   }]
-});
+})
 
 export default {
   add,

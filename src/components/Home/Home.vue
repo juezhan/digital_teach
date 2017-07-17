@@ -1,5 +1,10 @@
+<!--
+描述：主窗口
+开发人：桑杨
+开发日期：2017年7月17日
+-->
 <template>
-  <div id="home">
+  <div class="home">
     <tool-bar :menuChk="isSmail" @setSmail="setSmail"></tool-bar>
     <div class="s-flex container">
       <tree-list :menuChk="isSmail"></tree-list>
@@ -10,8 +15,8 @@
   </div>
 </template>
 
-<style lang="scss" type="text/scss">
-  #home {
+<style scoped lang="scss" type="text/scss">
+  .home {
     .container {
       position: fixed;
       top: 65px;

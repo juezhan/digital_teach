@@ -24,48 +24,6 @@ var proxyTable = config.dev.proxyTable;
 var app = express();
 var compiler = webpack(webpackConfig);
 
-var appData = require('../mock/data.json');
-var applications = appData.applications;
-var admin = appData.admin;
-var common = appData.common;
-var oa = appData.oa;
-var schedule = appData.schedule;
-
-var appRoutes = express.Router();
-
-appRoutes.get('/applications', function (req, res) {
-  res.json({
-    erron: 0,
-    data: applications
-  })
-});
-appRoutes.get('/admin', function (req, res) {
-  res.json({
-    erron: 0,
-    data: admin
-  })
-});
-appRoutes.get('/common', function (req, res) {
-  res.json({
-    erron: 0,
-    data: common
-  })
-});
-appRoutes.get('/oa', function (req, res) {
-  res.json({
-    erron: 0,
-    data: oa
-  })
-});
-appRoutes.get('/schedule', function (req, res) {
-  res.json({
-    erron: 0,
-    data: schedule
-  })
-});
-
-app.use('/api', appRoutes);
-
 var devMiddleware = require('webpack-dev-middleware')(compiler, {
   publicPath: webpackConfig.output.publicPath,
   quiet: true

@@ -1,23 +1,17 @@
 <template>
-  <div id="Search">
+  <div class="Search">
     <div class="hd">
       <i class="iconfont icon-query"></i>{{title}}
     </div>
     <div class="bd">
-      <el-form :inline="true" class="demo-form-inline">
-        <input-cell v-for="item in formInputs" :itemCell="item" :ref="item.itemName"></input-cell>
-        <el-form-item>
-          <el-button type="primary" @click="query"><i class="iconfont icon-query"></i>查询</el-button>
-          <el-button type="primary" @click="reset"><i class="iconfont icon-reset"></i>重置</el-button>
-        </el-form-item>
-      </el-form>
+      <slot></slot>
     </div>
   </div>
 </template>
-<style lang="scss" type="text/scss">
+<style scoped lang="scss" type="text/scss">
   @import "../../assets/Scss/Color";
 
-  #Search {
+  .Search {
     margin: 5px;
     .hd {
       background-color: $bg-color_1;
@@ -41,36 +35,13 @@
   export default{
     props: {
       title: {
-        default: '',
-        type: String
-      },
-      formInputs: {
-        type: Array,
-        default: null
-      }
-    },
-    data() {
-      return {
-        name: 'Compomnents Name'
+        type: String,
+        default: ''
       }
     },
     mounted() {
-//      console.log(this.formInputs);
     },
-    methods: {
-      reset() {
-        console.log('Reset')
-      },
-      query() {
-        let that = this
-        let result = {}
-        that.formInputs.forEach(function (e, i) {
-          result[e.itemName] = that.$refs[e.itemName][0].getValue()
-        })
-
-        that.$emit('getRescult', result)
-      }
-    },
+    methods: {},
     components: {},
     computed: {}
   }

@@ -1,7 +1,7 @@
 <!--
-描述：
-开发人：
-开发日期：
+描述：用户登录组件
+开发人：桑杨
+开发日期：2017年7月14日
 -->
 <template>
   <div class="sign-in">
@@ -48,6 +48,7 @@
   //  import store from '../../store/store'
 
   import axios from 'axios'
+  import store from '../../store/store'
 
   export default{
     data() {
@@ -107,9 +108,19 @@
               console.log(response.data)
               let data = response.data
               if (data.success) {
-                this.$store.state.user.name = data.user.name
-                this.$store.state.access_token = data.access_token
+//                this.$store.state.user.name = data.user.name
+//                this.$store.state.access_token = data.access_token
 //                this.$message.error(data.message)
+                sessionStorage.setItem('id', data.user.id)
+                sessionStorage.setItem('access_token', data.access_token)
+                store.commit({
+                  type: 'increment',
+                  access_token: data.access_token,
+                  user_name: data.user.name,
+                  user_token: data.user.token,
+                  user_id: data.user.id
+                })
+
                 router.push({path: '/'})
               } else {
                 this.$message.error(data.message)
