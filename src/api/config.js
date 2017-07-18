@@ -23,3 +23,10 @@ export const UserListUrl = RequestAdmin + '/camel/rest/users'
 
 //  字典列表
 export const ScheduleDicts = RequestAdmin + '/camel/rest/schedule/dicts'
+
+export const PageConfig = {
+  sizes: [20, 30, 40],
+  limit: 20,
+  page: 1,
+  start: 0
+}

@@ -1,16 +1,18 @@
+<!--
+描述：计划任务 - 系统管理 - 字典管理
+开发人：桑杨
+开发日期：2017年7月17日
+-->
 <template>
   <div class="schedule-dict">
     <search ref='mySearch' :title='searchTitle'>
-      <el-form ref="form" :inline="true" class="search-container" :model="form">
-        <el-form-item label="登录名">
-          <el-input v-model="form.loginName"></el-input>
-        </el-form-item>
-        <el-form-item label="姓名">
-          <el-input v-model="form.name"></el-input>
+      <el-form ref="form" :inline="true" class="search-container">
+        <el-form-item label="类型">
+          <el-input v-model="form.type"></el-input>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary"><i class="iconfont icon-query"></i>查询</el-button>
-          <el-button type="primary"><i class="iconfont icon-reset"></i>重置</el-button>
+          <el-button type="primary" @click="getValue"><i class="iconfont icon-query"></i>查询</el-button>
+          <el-button type="success"><i class="iconfont icon-reset"></i>重置</el-button>
         </el-form-item>
       </el-form>
     </search>
@@ -37,14 +39,14 @@
           </el-table>
         </div>
         <div class="pagination">
-          <el-pagination
-            @size-change="handleSizeChange"
-            @current-change="handleCurrentChange"
-            :current-page="currentPage4"
-            :page-sizes="[100, 200, 300, 400]"
-            :page-size="100"
-            layout="total, sizes, prev, pager, next, jumper"
-            :total="400">
+          <el-pagination v-if="totalCount"
+                         @size-change="handleSizeChange"
+                         @current-change="handleCurrentChange"
+                         :current-page="currentPage"
+                         :page-sizes="_pageSizes"
+                         :page-size="1"
+                         layout="total, sizes, prev, pager, next, jumper"
+                         :total="totalCount">
           </el-pagination>
         </div>
       </div>
@@ -107,19 +109,24 @@
 <script type="text/ecmascript-6">
   import Vue from 'vue'
   import {accessToken, getDC} from '../../../api/base'
-  import {ScheduleDicts} from '../../../api/config'
+  import {ScheduleDicts, PageConfig} from '../../../api/config'
+  import {strToUnicode} from '../../../unit/unicode-convert'
+
   export default {
     data() {
       return {
         searchTitle: '字典查询',
         form: {
-          loginName: '',
-          name: ''
+          type: ''
         },
-        currentPage4: 4,
         scheduleDicts: [],
         tebleHegiht: 0,
-        tebleWidth: 0
+        tebleWidth: 0,
+        totalCount: 0,
+        _pageSizes: [],
+        currentPage: 1,
+        _limit: 0,
+        _start: 0
       }
     },
     mounted() {
@@ -127,32 +134,58 @@
       this._initWrapperContainerHeight()
     },
     methods: {
-      _getScheduleDictsList() {
+      _getScheduleDictsList(isFlag) {
+        // 初始化 table 数据
         let that = this
+        //  检查是否是第一次执行
+        if (!isFlag) {
+          //  初始化分页控件
+          that._limit = PageConfig.sizes[0]
+          that._pageSizes = PageConfig.sizes
+          that.currentPage = PageConfig.page
+          that._start = PageConfig.start
+        }
         let _data = {
           _dc: getDC(),
-          page: 1,
-          start: 0,
-          limit: 20
+          page: that.currentPage,
+          start: that._start,
+          limit: that._limit
         }
+
+        if (that.form.type.length > 0) {
+          let str = (strToUnicode(that.form.type))
+          _data = Object.assign({}, _data, {jsonStr: {'type': str}})
+        }
+
         Vue.axios.get(ScheduleDicts, {
           headers: {access_token: accessToken},
           params: _data
         }).then(response => {
           that.scheduleDicts = response.data.data
+          that.totalCount = response.data.totalCount
         })
       },
       _initWrapperContainerHeight() {
-//        window.wrapperContainer = this.$refs.wrapperContainer
+        //  计算 table 容器高度
         this.tebleHegiht = this.$refs.wrapperContainer.scrollHeight
+        // 清理 table 横向滚动条
         let tbWrapper = document.getElementsByClassName('el-table__body-wrapper')
         tbWrapper[0].style.overflowX = 'hidden'
       },
       handleSizeChange(val) {
-        console.log(`每页 ${val} 条`)
+        //  改变每页记录数
+        let that = this
+        that._limit = val
+        that._getScheduleDictsList(true)
       },
       handleCurrentChange(val) {
-        console.log(`当前页: ${val}`)
+        //  翻页
+        let that = this
+        that.currentPage = val
+        that._getScheduleDictsList(true)
+      },
+      getValue() {
+        this._getScheduleDictsList(true)
       }
     }
   }
