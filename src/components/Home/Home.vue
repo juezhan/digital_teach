@@ -25,6 +25,7 @@
       width: 100%;
       .article {
         overflow: auto;
+        position: relative;
       }
     }
   }
@@ -37,6 +38,7 @@
   import Welcome from '../Welcome/Welcome.vue'
   import User from '../Admin/User/User.vue'
   import Role from '../Admin/Role/Role.vue'
+  import ScheduleDict from '../Schedule/ScheduleDict/ScheduleDict.vue'
   //  import data from '../../../util/mock'
 
   let _components = {
@@ -44,7 +46,8 @@
     TreeList,
     Welcome,
     User,
-    Role
+    Role,
+    ScheduleDict
   }
 
   export default{

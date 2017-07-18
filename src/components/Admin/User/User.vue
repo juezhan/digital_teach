@@ -52,11 +52,6 @@
 <style scoped lang='scss' type='text/scss'>
   .User {
     text-align: left;
-    .search-container {
-      .el-form-item {
-        margin-bottom: 0;
-      }
-    }
   }
 </style>
 <script>

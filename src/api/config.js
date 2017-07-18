@@ -17,5 +17,9 @@ export const RequestApi = {
     schedule: RequestAdmin + RequestApplication + '/schedule'
   }
 }
+
 //  用户列表
 export const UserListUrl = RequestAdmin + '/camel/rest/users'
+
+//  字典列表
+export const ScheduleDicts = RequestAdmin + '/camel/rest/schedule/dicts'
