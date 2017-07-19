@@ -10,7 +10,7 @@ export function strToUnicode(str) {
     while (temp.length < 4) {
       temp = '0' + temp
     }
-    r += '\\u' + temp
+    r += `\\u${temp}`
   }
   return r
 }

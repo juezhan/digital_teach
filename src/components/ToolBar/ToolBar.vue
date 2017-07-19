@@ -58,8 +58,8 @@
 
 <script>
   import Vue from 'vue'
-  //  import router from '../../router'
-  import { CacheTime, RequestApi, RequestAdmin } from '../../api/config'
+  import router from '../../router'
+  import {CacheTime, RequestApi, RequestAdmin} from '../../api/config'
 
   export default{
     props: {
@@ -126,7 +126,8 @@
             Vue.axios.get(RequestAdmin + '/logout', {
               headers: {access_token: accessToken}
             }).then(response => {
-//              router.push({path: '/'})
+              sessionStorage.clear()
+              router.push({path: '/signin'})
             })
             break
         }

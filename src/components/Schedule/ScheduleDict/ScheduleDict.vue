@@ -6,21 +6,21 @@
 <template>
   <div class="schedule-dict">
     <search ref='mySearch' :title='searchTitle'>
-      <el-form ref="form" :inline="true" class="search-container">
-        <el-form-item label="类型">
+      <el-form ref="form" :rules="rules" :model="form" :inline="true" class="search-container">
+        <el-form-item label="类型" prop="type">
           <el-input v-model="form.type"></el-input>
         </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="getValue"><i class="iconfont icon-query"></i>查询</el-button>
-          <el-button type="success"><i class="iconfont icon-reset"></i>重置</el-button>
+          <el-button type="success" @click="resetForm"><i class="iconfont icon-reset"></i>重置</el-button>
         </el-form-item>
       </el-form>
     </search>
     <div class="wrapper">
-      <div class="hd">用户列表</div>
+      <div class="hd">字典列表</div>
       <div class="bd">
         <div class="toolbar">
-          <el-button><i class="iconfont icon-add"></i>添加</el-button>
+          <el-button @click="openDialogForm"><i class="iconfont icon-add"></i>添加</el-button>
         </div>
         <div ref="wrapperContainer" class="container">
           <el-table border :data="scheduleDicts" :height="tebleHegiht">
@@ -51,6 +51,30 @@
         </div>
       </div>
     </div>
+
+    <el-dialog title="添加" :visible.sync="dialogFormVisible" class="dialog-form">
+      <el-form :model="dialogForm" :rules="dialogFormRules" ref="dialogForm" :label-width="'80px'">
+        <el-form-item label="类型" prop="type">
+          <el-select v-model="dialogForm.type">
+            <el-option v-for="item in dialogFormTypes" :label="item.name" :value="item.name"></el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="标签名" prop="label">
+          <el-input v-model="dialogForm.label" placeholder="请输入标签名" auto-complete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="备注">
+          <el-input v-model="dialogForm.description"
+                    type="textarea"
+                    :rows="3"
+                    placeholder="请输入内容"></el-input>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="dialogFormCancel">取 消</el-button>
+        <el-button type="primary" @click="dialogFormSubmit">确 定</el-button>
+      </div>
+    </el-dialog>
+
   </div>
 </template>
 
@@ -103,21 +127,43 @@
         }
       }
     }
+    .dialog-form {
+      text-align: left;
+    }
   }
 </style>
 
 <script type="text/ecmascript-6">
   import Vue from 'vue'
+  //  import axios from 'axios'
   import {accessToken, getDC} from '../../../api/base'
-  import {ScheduleDicts, PageConfig} from '../../../api/config'
+  import {ScheduleDicts, PageConfig, ScheduleDictsTypesList} from '../../../api/config'
   import {strToUnicode} from '../../../unit/unicode-convert'
 
   export default {
     data() {
+      let validateType = (rule, value, callback) => {
+        callback()
+//        if (!value) {
+//          this.$message({
+//            showClose: true,
+//            type: 'info',
+//            message: `action: ${value}`
+//          })
+//          return callback()
+//        } else {
+//          callback()
+//        }
+      }
       return {
         searchTitle: '字典查询',
         form: {
           type: ''
+        },
+        rules: {
+          type: [
+            {validator: validateType, trigger: 'blur'}
+          ]
         },
         scheduleDicts: [],
         tebleHegiht: 0,
@@ -126,7 +172,21 @@
         _pageSizes: [],
         currentPage: 1,
         _limit: 0,
-        _start: 0
+        _start: 0,
+        dialogFormVisible: false,
+        dialogFormTypes: [],
+        dialogForm: {
+          type: '',
+          label: '',
+          description: ''
+        },
+        dialogFormRules: {
+          type: [
+            {required: true, message: '请选择类型', trigger: 'blur'}
+          ],
+          label: [
+            {required: true, message: '请输入标签名', trigger: 'blur'}]
+        }
       }
     },
     mounted() {
@@ -135,6 +195,7 @@
     },
     methods: {
       _getScheduleDictsList(isFlag) {
+        console.log('accessToken:' + accessToken)
         // 初始化 table 数据
         let that = this
         //  检查是否是第一次执行
@@ -151,12 +212,9 @@
           start: that._start,
           limit: that._limit
         }
-
         if (that.form.type.length > 0) {
-          let str = (strToUnicode(that.form.type))
-          _data = Object.assign({}, _data, {jsonStr: {'type': str}})
+          _data = Object.assign({}, _data, {jsonStr: '{"%type%": "' + strToUnicode(that.form.type) + '"}'})
         }
-
         Vue.axios.get(ScheduleDicts, {
           headers: {access_token: accessToken},
           params: _data
@@ -185,7 +243,76 @@
         that._getScheduleDictsList(true)
       },
       getValue() {
-        this._getScheduleDictsList(true)
+        if (this.form.type.length > 0) {
+          this._getScheduleDictsList(true)
+        }
+      },
+      resetForm() {
+        this.$refs.form.resetFields()
+      },
+      openDialogForm() {
+//          打开对话框
+        let that = this
+        that.dialogFormVisible = true
+        let _data = {
+          _dc: getDC(),
+          query: '',
+          page: 1,
+          start: 0,
+          limit: 25
+        }
+        Vue.axios.get(ScheduleDictsTypesList, {
+          headers: {access_token: accessToken},
+          params: _data
+        }).then(response => {
+          that.dialogFormTypes = response.data
+        })
+      },
+      dialogFormSubmit() {
+//         提交对话框
+        let that = this
+        this.$refs.dialogForm.validate((valid) => {
+          if (valid) {
+            let _data = {
+              id: 0,
+              description: that.dialogForm.description,
+              label: that.dialogForm.label,
+              type: that.dialogForm.type
+            }
+            Vue.axios({
+              url: ScheduleDicts,
+              method: 'POST',
+              headers: {access_token: accessToken},
+              params: {_dc: getDC()},
+              data: _data
+            }).then(response => {
+              if (response.data.success) {
+                this.$message({
+                  showClose: true,
+                  message: response.data.msg,
+                  type: 'success'
+                })
+                // 关闭对话框
+                that.dialogFormVisible = false
+                // 刷新列表
+                that._getScheduleDictsList(false)
+                that.$refs.dialogForm.resetFields()
+                that.dialogForm.description = ''
+              } else {
+                this.$message({
+                  showClose: true,
+                  message: response.data.msg,
+                  type: 'error'
+                })
+              }
+            })
+          } else {
+            return false
+          }
+        })
+      },
+      dialogFormCancel() {
+        this.dialogFormVisible = false
       }
     }
   }

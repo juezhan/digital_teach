@@ -18,7 +18,7 @@
 <style scoped lang="scss" type="text/scss">
   .home {
     .container {
-      position: fixed;
+      position: absolute;
       top: 65px;
       left: 0;
       bottom: 0;
