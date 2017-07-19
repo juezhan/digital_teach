@@ -31,8 +31,9 @@
                 管理员<i class="el-icon-caret-bottom el-icon--right"></i>
               </span>
               <el-dropdown-menu slot="dropdown">
-                <el-dropdown-item command="a">个人信息修改</el-dropdown-item>
-                <el-dropdown-item command="b">修改密码</el-dropdown-item>
+                <el-dropdown-item command="changeInfo">个人信息修改</el-dropdown-item>
+                <el-dropdown-item command="changePwd">修改密码</el-dropdown-item>
+                <el-dropdown-item command="logout">登出</el-dropdown-item>
               </el-dropdown-menu>
             </el-dropdown>
           </li>
@@ -54,6 +55,99 @@
     </div>
   </div>
 </template>
+
+<script>
+  import Vue from 'vue'
+  //  import router from '../../router'
+  import { CacheTime, RequestApi, RequestAdmin } from '../../api/config'
+
+  export default{
+    props: {
+      menuChk: {
+        default: false
+      }
+    },
+    data() {
+      return {
+        name: 'Component Name',
+        menuList: [],
+        themeOptions: [
+          {value: '选项1', label: '浅蓝'},
+          {value: '选项2', label: '黑色'},
+          {value: '选项3', label: '深蓝'},
+          {value: '选项4', label: '蓝灰'},
+          {value: '选项5', label: '经典'},
+          {value: '选项6', label: '灰色'}
+        ],
+        themeValue: '浅蓝'
+      }
+    },
+    mounted () {
+      let d = new Date()
+      let cd = d.getTime()
+      let toolListData = {}
+
+      if (localStorage.getItem('toolListData')) {
+        toolListData = JSON.parse(localStorage.getItem('toolListData'))
+      }
+      if (toolListData.createDate && (toolListData.createDate - cd) < CacheTime && toolListData.data) {
+        this.menuList = toolListData.data
+      } else {
+        const accessToken = sessionStorage.getItem('access_token')
+        const data = {
+          _dc: cd,
+          page: 1,
+          start: 0,
+          limit: 25
+        }
+        Vue.axios.get(RequestApi.SystemApplication, {
+          headers: {access_token: accessToken},
+          params: data
+        }).then(response => {
+          this.menuList = response.data
+          let nowDate = new Date()
+          toolListData.data = this.menuList
+          toolListData.createDate = nowDate.getTime()
+          localStorage.setItem('toolListData', JSON.stringify(toolListData))
+        })
+      }
+    },
+    methods: {
+      handleCommand(command) {
+        switch (command) {
+          case 'changeInfo' :
+            this.$message('click on item ' + 'aaa')
+            break
+          case 'changePwd' :
+            this.$message('click on item ' + 'bbb')
+            break
+          case 'logout' :
+            const accessToken = sessionStorage.getItem('access_token')
+            Vue.axios.get(RequestAdmin + '/logout', {
+              headers: {access_token: accessToken}
+            }).then(response => {
+//              router.push({path: '/'})
+            })
+            break
+        }
+      },
+      bindClass(e) {
+        return e
+      },
+      menuChkChange() {
+        this.$emit('setSmail', this.menuChk)
+      }
+    },
+    components: {},
+    computed: {
+      classObject(e) {
+        return {
+          'iconfont': true
+        }
+      }
+    }
+  }
+</script>
 
 <style scoped lang="scss" type="text/scss">
   #ToolBar {
@@ -113,79 +207,3 @@
     }
   }
 </style>
-
-<script>
-  import Vue from 'vue'
-  import {CacheTime, RequestApi} from '../../api/config'
-
-  export default{
-    props: {
-      menuChk: {
-        default: false
-      }
-    },
-    data() {
-      return {
-        name: 'Compomnents Name',
-        menuList: [],
-        themeOptions: [
-          {value: '选项1', label: '浅蓝'},
-          {value: '选项2', label: '黑色'},
-          {value: '选项3', label: '深蓝'},
-          {value: '选项4', label: '蓝灰'},
-          {value: '选项5', label: '经典'},
-          {value: '选项6', label: '灰色'}
-        ],
-        themeValue: '浅蓝'
-      }
-    },
-    mounted () {
-      let d = new Date()
-      let cd = d.getTime()
-      let toolListData = {}
-
-      if (localStorage.getItem('toolListData')) {
-        toolListData = JSON.parse(localStorage.getItem('toolListData'))
-      }
-      if (toolListData.createDate && (toolListData.createDate - cd) < CacheTime && toolListData.data) {
-        this.menuList = toolListData.data
-      } else {
-        const accessToken = sessionStorage.getItem('access_token')
-        const data = {
-          _dc: cd,
-          page: 1,
-          start: 0,
-          limit: 25
-        }
-        Vue.axios.get(RequestApi.SystemApplication, {
-          headers: {access_token: accessToken},
-          params: data
-        }).then(response => {
-          this.menuList = response.data
-          let nowDate = new Date()
-          toolListData.data = this.menuList
-          toolListData.createDate = nowDate.getTime()
-          localStorage.setItem('toolListData', JSON.stringify(toolListData))
-        })
-      }
-    },
-    methods: {
-      handleCommand () {
-      },
-      bindClass (e) {
-        return e
-      },
-      menuChkChange () {
-        this.$emit('setSmail', this.menuChk)
-      }
-    },
-    components: {},
-    computed: {
-      classObject(e) {
-        return {
-          'iconfont': true
-        }
-      }
-    }
-  }
-</script>
