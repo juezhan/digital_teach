@@ -121,9 +121,7 @@
             this.$message('click on item ' + 'bbb')
             break
           case 'logout' :
-            const accessToken = sessionStorage.getItem('access_token')
             Vue.axios.get(RequestAdmin + '/logout', {
-              headers: {access_token: accessToken}
             }).then(response => {
               sessionStorage.clear()
               localStorage.clear()
