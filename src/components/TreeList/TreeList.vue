@@ -108,7 +108,7 @@
   //  import axios from 'axios'
   import {CacheTime, RequestApi} from '../../api/config'
 
-  export default{
+  export default {
     props: {
       menuChk: {
         default: false
@@ -141,12 +141,11 @@
         if (treeListData.createDate && (treeListData.createDate - cd) < CacheTime && treeListData[this.currName]) {
           this.treeData = treeListData[this.currName]
         } else {
-          const accessToken = sessionStorage.getItem('access_token')
           const data = {_dc: cd, node: 'root'}
           Vue.axios({
             url: RequestApi.SystemApplications[this.currName],
             method: 'get',
-            headers: {'access_token': accessToken},
+//            headers: {'AccessToken': accessToken, JSESSIONID: userToken},
             params: data
           }).then(response => {
             let nowDate = new Date()

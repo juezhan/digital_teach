@@ -50,7 +50,7 @@
   import axios from 'axios'
   import store from '../../store/store'
 
-  export default{
+  export default {
     data() {
       var validatePass = (rule, value, callback) => {
         if (value === '') {
@@ -113,6 +113,7 @@
 //                this.$message.error(data.message)
                 sessionStorage.setItem('id', data.user.id)
                 sessionStorage.setItem('access_token', data.access_token)
+                sessionStorage.setItem('user_token', data.user.token)
                 console.log(data.access_token)
                 store.commit({
                   type: 'increment',

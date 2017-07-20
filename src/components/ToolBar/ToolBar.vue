@@ -61,7 +61,7 @@
   import router from '../../router'
   import {CacheTime, RequestApi, RequestAdmin} from '../../api/config'
 
-  export default{
+  export default {
     props: {
       menuChk: {
         default: false
@@ -82,7 +82,7 @@
         themeValue: '浅蓝'
       }
     },
-    mounted () {
+    mounted() {
       let d = new Date()
       let cd = d.getTime()
       let toolListData = {}
@@ -93,7 +93,6 @@
       if (toolListData.createDate && (toolListData.createDate - cd) < CacheTime && toolListData.data) {
         this.menuList = toolListData.data
       } else {
-        const accessToken = sessionStorage.getItem('access_token')
         const data = {
           _dc: cd,
           page: 1,
@@ -101,7 +100,7 @@
           limit: 25
         }
         Vue.axios.get(RequestApi.SystemApplication, {
-          headers: {access_token: accessToken},
+
           params: data
         }).then(response => {
           this.menuList = response.data
@@ -127,6 +126,7 @@
               headers: {access_token: accessToken}
             }).then(response => {
               sessionStorage.clear()
+              localStorage.clear()
               router.push({path: '/signin'})
             })
             break
