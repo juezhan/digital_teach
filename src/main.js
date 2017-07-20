@@ -11,12 +11,14 @@ import VueAxios from 'vue-axios'
 import store from './store/store'
 
 import Search from './comm/Search/Search.vue'
+import Wrapper from './comm/Wrapper/Wrapper.vue'
 import InputCell from './comm/InputCell/InputCell.vue'
 
 Vue.use(Vuex)
 Vue.use(VueAxios, axios)
 Vue.use(ElementUI)
 Vue.component('search', Search)
+Vue.component('wrapper', Wrapper)
 Vue.component('input-cell', InputCell)
 Vue.use(router)
 

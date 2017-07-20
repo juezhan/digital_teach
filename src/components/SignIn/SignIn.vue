@@ -113,6 +113,7 @@
 //                this.$message.error(data.message)
                 sessionStorage.setItem('id', data.user.id)
                 sessionStorage.setItem('access_token', data.access_token)
+                console.log(data.access_token)
                 store.commit({
                   type: 'increment',
                   access_token: data.access_token,

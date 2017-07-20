@@ -9,4 +9,10 @@ export function getDC() {
   return d.getTime()
 }
 
-export const accessToken = sessionStorage.getItem('access_token')
+export let accessToken = (function () {
+  return sessionStorage.getItem('access_token')
+})()
+
+export function getAccessToken() {
+  return sessionStorage.getItem('access_token')
+}
