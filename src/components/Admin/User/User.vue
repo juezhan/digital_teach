@@ -96,7 +96,6 @@
           limit: 20
         }
         Vue.axios.get(UserListUrl, {
-          headers: {access_token: getAccessToken()},
           params: _data
         }).then(response => {
           this.userList = response.data.data

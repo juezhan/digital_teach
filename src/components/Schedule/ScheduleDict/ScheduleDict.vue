@@ -189,7 +189,6 @@
           _data = Object.assign({}, _data, {jsonStr: '{"%type%": "' + strToUnicode(that.search.form.type) + '"}'})
         }
         Vue.axios.get(ScheduleDicts, {
-          headers: {access_token: getAccessToken()},
           params: _data
         }).then(response => {
           that.scheduleDicts = response.data.data
@@ -238,7 +237,6 @@
           limit: 25
         }
         Vue.axios.get(ScheduleDictsTypesList, {
-          headers: {access_token: getAccessToken()},
           params: _data
         }).then(response => {
           that.dialog.types = response.data
@@ -258,7 +256,6 @@
             Vue.axios({
               url: ScheduleDicts,
               method: 'POST',
-              headers: {access_token: getAccessToken()},
               params: {_dc: getDC()},
               data: _data
             }).then(response => {
@@ -311,7 +308,6 @@
           Vue.axios({
             url: ScheduleDicts + '/' + row.id,
             method: 'DELETE',
-            headers: {access_token: getAccessToken()},
             params: {_dc: getDC()},
             data: {
               id: row.id
