@@ -19,8 +19,8 @@
           <div class="mn" v-show="setShow(item)">
             <ul>
               <li v-for="item2 in item.children">
-                <router-link tag="div" class="tit" :to="{path:'/'+item2.routeId}"><i
-                  :class="bindClass(item2.text)"></i>{{item2.text}}
+                <router-link tag="div" class="tit" :to="{path:'/'+item2.routeId}">
+                  <i class="tit_icon" :class="bindClass(item2.iconCls)"></i>{{item2.text}}
                 </router-link>
               </li>
             </ul>
@@ -30,79 +30,7 @@
     </ul>
   </div>
 </template>
-<style scoped lang="scss" type="text/scss">
-  .treeList {
-    width: 250px;
-    height: 100%;
-    background-color: #32404e;
-    color: #ffffff;
-    text-align: left;
-    overflow: hidden;
-    transition: width .2s;
-    li {
-      width: 250px;
-    }
-    .tit {
-      height: 64px;
-      line-height: 64px;
-      padding-left: 22px;
-      padding-right: 12px;
-      color: #adb3b8;
-      position: relative;
-      transition: color 0.5s;
-      cursor: pointer;
-      .tit_icon {
-        margin-right: 12px;
-        font-size: 24px;
-      }
-      .txt,
-      .arrow {
-        transition: opacity .2s;
-      }
-      .txt {
-        display: inline-block;
-      }
-      .arrow {
-        width: 12px;
-      }
-      &:hover {
-        background-color: #3c4a57;
-        color: #d6d9dc;
-      }
-    }
 
-    &.smail {
-      width: 65px;
-      .tit {
-        .txt,
-        .arrow {
-          opacity: 0;
-        }
-      }
-    }
-    .mn {
-      .tit {
-        padding-left: 44px;
-        &:before {
-          top: 0;
-          left: 0;
-          bottom: 0;
-          width: 5px;
-          background-color: #42b983;
-          content: '';
-          position: absolute;
-          display: block;
-          visibility: hidden;
-        }
-        &.router-link-exact-active {
-          &:before {
-            visibility: visible;
-          }
-        }
-      }
-    }
-  }
-</style>
 <script>
   import Vue from 'vue'
   //  import axios from 'axios'
@@ -190,3 +118,77 @@
     components: {}
   }
 </script>
+
+<style scoped lang="scss" type="text/scss">
+  .treeList {
+    width: 250px;
+    height: 100%;
+    background-color: #32404e;
+    color: #ffffff;
+    text-align: left;
+    overflow: hidden;
+    transition: width .2s;
+    li {
+      width: 250px;
+    }
+    .tit {
+      height: 64px;
+      line-height: 64px;
+      padding-left: 22px;
+      padding-right: 12px;
+      color: #adb3b8;
+      position: relative;
+      transition: color 0.5s;
+      cursor: pointer;
+      .tit_icon {
+        margin-right: 12px;
+        font-size: 24px;
+      }
+      .txt,
+      .arrow {
+        transition: opacity .2s;
+      }
+      .txt {
+        display: inline-block;
+      }
+      .arrow {
+        width: 12px;
+      }
+      &:hover {
+        background-color: #3c4a57;
+        color: #d6d9dc;
+      }
+    }
+
+    &.smail {
+      width: 65px;
+      .tit {
+        .txt,
+        .arrow {
+          opacity: 0;
+        }
+      }
+    }
+    .mn {
+      .tit {
+        padding-left: 44px;
+        &:before {
+          top: 0;
+          left: 0;
+          bottom: 0;
+          width: 5px;
+          background-color: #42b983;
+          content: '';
+          position: absolute;
+          display: block;
+          visibility: hidden;
+        }
+        &.router-link-exact-active {
+          &:before {
+            visibility: visible;
+          }
+        }
+      }
+    }
+  }
+</style>

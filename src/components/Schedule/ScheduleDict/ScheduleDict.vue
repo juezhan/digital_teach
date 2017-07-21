@@ -17,56 +17,56 @@
       </el-form>
     </search>
     <wrapper ref='myWrapper' :title="'字典列表'" :icon="'iconfont icon-dict-management'">
-      <div class="toolbar">
-        <el-button @click="openDialogForm"><i class="iconfont icon-add"></i>添加</el-button>
+      <!-- 按钮 -->
+      <div slot="toolbar">
+        <el-button @click="openDialogForm" type="primary"><i class="iconfont icon-add"></i>添加</el-button>
       </div>
-      <div ref="wrapperContainer" class="container">
-        <el-table border :data="scheduleDicts" :height="tebleHegiht">
-          <el-table-column label="行号" width="70">
-            <template scope="scope">
-              <div style="text-align: center">{{ scope.$index+rowNo}}</div>
-            </template>
-          </el-table-column>
-          <el-table-column prop="type" label="类型" width="180"></el-table-column>
-          <el-table-column prop="label" label="签名" width="180"></el-table-column>
-          <el-table-column prop="value" label="数值" width="70"></el-table-column>
-          <el-table-column prop="createBy" label="创建人" width="120"></el-table-column>
-          <el-table-column prop="creationDate" label="创建日期"></el-table-column>
-          <el-table-column label="操作" width="150">
-            <template scope="scope">
-              <el-button type="text" size="small" @click="taberDetail(scope.$index, scope.row)">查看</el-button>
-              <el-button type="text" size="small" @click="taberEdit(scope.$index, scope.row)">编辑</el-button>
-              <el-button type="text" size="small" @click="taberDelete(scope.$index, scope.row)">删除</el-button>
-            </template>
-          </el-table-column>
-        </el-table>
-      </div>
-      <div class="pagination">
-        <el-pagination v-if="pager.totalCount"
-                       @size-change="pagerSizeChange"
-                       @current-change="pagerCurrentChange"
-                       :current-page="pager.currentPage"
-                       :page-sizes="pager.pageSizes"
-                       :page-size="1"
-                       layout="total, sizes, prev, pager, next, jumper"
-                       :total="pager.totalCount">
-        </el-pagination>
-      </div>
+      <!-- 列表 -->
+      <el-table slot="container" border :data="scheduleDicts" :height="tebleHegiht">
+        <el-table-column label="行号" width="70">
+          <template scope="scope">
+            <div style="text-align: center">{{ scope.$index+rowNo}}</div>
+          </template>
+        </el-table-column>
+        <el-table-column prop="type" label="类型" width="180"></el-table-column>
+        <el-table-column prop="label" label="签名" width="180"></el-table-column>
+        <el-table-column prop="value" label="数值" width="70"></el-table-column>
+        <el-table-column prop="createBy" label="创建人" width="120"></el-table-column>
+        <el-table-column prop="creationDate" label="创建日期"></el-table-column>
+        <el-table-column label="操作" width="150">
+          <template scope="scope">
+            <el-button type="text" size="small" @click="taberDetail(scope.$index, scope.row)">查看</el-button>
+            <el-button type="text" size="small" @click="taberEdit(scope.$index, scope.row)">编辑</el-button>
+            <el-button type="text" size="small" @click="taberDelete(scope.$index, scope.row)">删除</el-button>
+          </template>
+        </el-table-column>
+      </el-table>
+      <!-- 分页器 -->
+      <el-pagination slot="pagination" v-if="pager.totalCount"
+                     @size-change="pagerSizeChange"
+                     @current-change="pagerCurrentChange"
+                     :current-page="pager.currentPage"
+                     :page-sizes="pager.pageSizes"
+                     :page-size="1"
+                     layout="total, sizes, prev, pager, next, jumper"
+                     :total="pager.totalCount">
+      </el-pagination>
     </wrapper>
 
     <!-- 对话框 -->
-    <el-dialog :title="dialog.title" :visible.sync="dialog.visible" class="dialog-form">
-      <input type="hidden" v-model="dialog.form.id"/>
+    <el-dialog :title="dialog.title" :visible.sync="dialog.visible" class="dialog-form"
+               :before-close="dialogFormCancel">
       <el-form :model="dialog.form" :rules="dialog.rules" ref="dialogForm" :label-width="'80px'">
         <el-form-item v-if="dialog.isDetail" label="类型" prop="type">
           <el-input v-model="dialog.form.type" :readonly="dialog.isDetail" auto-complete="off"></el-input>
         </el-form-item>
         <el-form-item v-else label="类型" prop="type">
           <el-select v-model="dialog.form.type">
-            <el-option v-for="item in dialog.types" :label="item.name" :value="item.name"></el-option>
+            <el-option v-for="item in dialog.form.types" :label="item.name" :value="item.name"></el-option>
           </el-select>
         </el-form-item>
         <el-form-item label="标签名" prop="label">
+          <input type="hidden" v-model="dialog.form.id"/>
           <el-input v-model="dialog.form.label" placeholder="请输入标签名" :readonly="dialog.isDetail"
                     auto-complete="off"></el-input>
         </el-form-item>
@@ -81,7 +81,7 @@
         <template v-if="dialog.isDetail">
           <el-button type="primary" @click="dialogFormCancel">关 闭</el-button>
         </template>
-        <template v-else="">
+        <template v-else>
           <el-button @click="dialogFormCancel">取 消</el-button>
           <el-button type="primary" @click="dialogFormSubmit">提 交</el-button>
         </template>
@@ -92,10 +92,13 @@
 </template>
 
 <script type="text/ecmascript-6">
-  import Vue from 'vue'
-  import {getDC, getAccessToken} from '../../../api/base'
+  import {getDC} from '../../../api/base'
   import {ScheduleDicts, PageConfig, ScheduleDictsTypesList} from '../../../api/config'
   import {strToUnicode} from '../../../unit/unicode-convert'
+  import axiosRequest from '../../../axios/axios-request'
+  import Message from '../../../js/message'
+
+  let dialogFormTypes = []
 
   export default {
     data() {
@@ -161,6 +164,9 @@
         }
       }
     },
+    created() {
+      this.defaultDialogForm = JSON.parse(JSON.stringify(this.$data.dialog.form))
+    },
     mounted() {
       // 初始化数据列表
       this._getScheduleDictsList()
@@ -188,7 +194,8 @@
         if (that.search.form.type.length > 0) {
           _data = Object.assign({}, _data, {jsonStr: '{"%type%": "' + strToUnicode(that.search.form.type) + '"}'})
         }
-        Vue.axios.get(ScheduleDicts, {
+        axiosRequest.get({
+          url: ScheduleDicts,
           params: _data
         }).then(response => {
           that.scheduleDicts = response.data.data
@@ -197,10 +204,32 @@
       },
       _initWrapperContainerHeight() {
         //  计算 table 容器高度
-        this.tebleHegiht = this.$refs.wrapperContainer.scrollHeight
+        this.tebleHegiht = this.$refs.myWrapper.getContainerHeight()
         // 清理 table 横向滚动条
         let tbWrapper = document.getElementsByClassName('el-table__body-wrapper')
         tbWrapper[0].style.overflowX = 'hidden'
+      },
+      _getTypes() {
+        // 加载类型选项
+        let that = this
+        if (that.dialog.form.types.length > 0) {
+          that.dialog.form.types = dialogFormTypes
+          return
+        }
+        let _data = {
+          _dc: getDC(),
+          query: '',
+          page: 1,
+          start: 0,
+          limit: 25
+        }
+        axiosRequest.get({
+          url: ScheduleDictsTypesList,
+          params: _data
+        }).then(response => {
+          that.dialog.form.types = response.data
+          dialogFormTypes = response.data
+        })
       },
       pagerSizeChange(val) {
         //  改变每页记录数
@@ -211,12 +240,12 @@
       pagerCurrentChange(val) {
         //  翻页
         let that = this
-        that.currentPage = val
+        that.pager.currentPage = val
         that._getScheduleDictsList(true)
       },
       searchFormSubmit() {
         // 查询
-        if (this.form.type.length > 0) {
+        if (this.search.form.type.length > 0) {
           this._getScheduleDictsList(true)
         }
       },
@@ -229,18 +258,7 @@
         let that = this
         that.dialog.visible = true
         that.dialog.title = '添加'
-        let _data = {
-          _dc: getDC(),
-          query: '',
-          page: 1,
-          start: 0,
-          limit: 25
-        }
-        Vue.axios.get(ScheduleDictsTypesList, {
-          params: _data
-        }).then(response => {
-          that.dialog.types = response.data
-        })
+        that._getTypes()
       },
       dialogFormSubmit() {
         // 提交对话框
@@ -253,30 +271,21 @@
               label: that.dialog.form.label,
               type: that.dialog.form.type
             }
-            Vue.axios({
+            axiosRequest.post({
               url: ScheduleDicts,
-              method: 'POST',
               params: {_dc: getDC()},
               data: _data
             }).then(response => {
               if (response.data.success) {
-                this.$message({
-                  showClose: true,
-                  message: response.data.msg,
-                  type: 'success'
-                })
+                Message.success('response.data.msg')
                 // 关闭对话框
-                that.dialog.visible = false
+                that.dialogFormCancel()
                 // 刷新列表
                 that._getScheduleDictsList(false)
                 that.$refs.dialogForm.resetFields()
                 that.dialog.form.description = ''
               } else {
-                this.$message({
-                  showClose: true,
-                  message: response.data.msg,
-                  type: 'error'
-                })
+                Message.error(response.data.msg)
               }
             })
           } else {
@@ -287,6 +296,9 @@
       dialogFormCancel() {
         // 关闭对话框
         this.dialog.visible = false
+        this.dialog.title = ''
+        this.dialog.isDetail = false
+        this.$data.dialog.form = Object.assign({}, this.defaultDialogForm)
       },
       taberDetail(index, row) {
         this.dialog.isDetail = true
@@ -296,6 +308,7 @@
       taberEdit(index, row) {
         this.dialog.isDetail = false
         this.dialog.title = '修改'
+        this._getTypes()
         this._showDetail(index, row)
       },
       taberDelete(index, row) {
@@ -305,18 +318,14 @@
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
-          Vue.axios({
+          axiosRequest.delete({
             url: ScheduleDicts + '/' + row.id,
-            method: 'DELETE',
             params: {_dc: getDC()},
             data: {
               id: row.id
             }
           }).then(response => {
-            this.$message({
-              type: 'success',
-              message: response.data.msg
-            })
+            Message.success(response.data.msg)
             this._getScheduleDictsList(false)
           })
         }).catch(() => {
@@ -332,7 +341,7 @@
       }
     },
     computed: {
-      rowNo: function () {
+      rowNo () {
         // 返回当前行号
         return (1 + ((this.pager.currentPage - 1) * this.pager.limit))
       }
@@ -344,30 +353,6 @@
   @import "../../../assets/Scss/Color";
 
   .schedule-dict {
-    .toolbar {
-      padding: 12px;
-      text-align: left;
-      .el-button {
-        .iconfont {
-          font-size: 14px;
-        }
-      }
-    }
-    .container {
-      position: absolute;
-      padding: 0 12px;
-      bottom: 48px;
-      right: 0;
-      left: 0;
-      top: 104px;
-      text-align: left;
-    }
-    .pagination {
-      text-align: left;
-      padding: 8px 0;
-      position: absolute;
-      bottom: 0;
-    }
     .dialog-form {
       text-align: left;
     }

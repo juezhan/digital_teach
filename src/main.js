@@ -1,18 +1,18 @@
 // The Vue build version to load with the `import` command
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
-import Vue from 'vue'
-import Vuex from 'vuex'
-import ElementUI from 'element-ui'
-import 'element-ui/lib/theme-default/index.css'
-import App from './App'
-import router from './router'
-import axios from 'axios'
-import VueAxios from 'vue-axios'
-import store from './store/store'
+import Vue from "vue";
+import Vuex from "vuex";
+import ElementUI from "element-ui";
+import "element-ui/lib/theme-default/index.css";
+import App from "./App";
+import router from "./router";
+import axios from "./axios/axios-config";
+import VueAxios from "vue-axios";
+import store from "./store/store";
 
-import Search from './comm/Search/Search.vue'
-import Wrapper from './comm/Wrapper/Wrapper.vue'
-import InputCell from './comm/InputCell/InputCell.vue'
+import Search from "./comm/Search/Search.vue";
+import Wrapper from "./comm/Wrapper/Wrapper.vue";
+import InputCell from "./comm/InputCell/InputCell.vue";
 
 Vue.use(Vuex)
 Vue.use(VueAxios, axios)
@@ -53,12 +53,14 @@ axios.interceptors.request.use(config => {
   return Promise.reject(error)
 })
 // http响应拦截器
-axios.interceptors.response.use(data => { // 响应成功关闭loading
+axios.interceptors.response.use(data => {
+  // 响应成功关闭loading
   loadinginstace.close()
   return data
 }, error => {
   loadinginstace.close()
   ElementUI.Message.error({
+    showClose: true,
     message: '加载失败'
   })
   return Promise.reject(error)
