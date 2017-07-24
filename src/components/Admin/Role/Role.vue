@@ -1,48 +1,29 @@
 <template>
-  <!--角色管理-->
-  <div id="Role">
-    <div>级联选择器</div>
-    <div>
-      <div class="block">
-        <span class="demonstration">默认 click 触发子菜单</span>
-        <el-cascader :options="options" v-model="selectedOptions" @change="handleChange"
-                     :props="props">
-        </el-cascader>
-      </div>
-    </div>
+  <div>
+    <kalix-table :targetUrl="roleUrl" :colData="roleColData"></kalix-table>
   </div>
 </template>
-<style lang="scss" type="text/scss" scoped>
-  #Role {
-  }
-</style>
 <script>
-  import Vue from 'vue'
-  export default{
+  import mytable from './MyTable'
+  import { RoleListUrl } from '../../../api/config'
+  export default ({
     data() {
       return {
-        name: 'Role',
-        options: [],
-        selectedOptions: [],
-        selectedOptions2: [],
-        props: {
-          value: 'label',
-          children: 'cities'
-        }
+        roleUrl: RoleListUrl,
+        roleColData: [
+          {prop: 'id', label: '所属应用'},
+          {prop: 'app', label: '所属应用'},
+          {prop: 'name', label: '角色名称'},
+          {prop: 'remark', label: '备注'},
+          {prop: 'createBy', label: '创建人'},
+          {prop: 'creationDate', label: '创建时间'}
+        ],
+        btnOption: ['btnEdit', 'btnDelete', 'btnView']
       }
     },
-    mounted() {
-      Vue.axios.get('http://test.cn/options').then(response => {
-        this.options = response.data.data
-        console.log(this.options)
-      })
-    },
-    methods: {
-      handleChange(value) {
-        console.log(value)
-      }
-    },
-    components: {},
-    computed: {}
-  }
+    components: {
+      kalixTable: mytable
+    }
+
+  })
 </script>

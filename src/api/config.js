@@ -21,6 +21,9 @@ export const RequestApi = {
 //  用户列表
 export const UserListUrl = RequestAdmin + '/camel/rest/users'
 
+//  用户列表
+export const RoleListUrl = RequestAdmin + '/camel/rest/users'
+
 //  字典列表
 export const ScheduleDicts = RequestAdmin + '/camel/rest/schedule/dicts'
 
