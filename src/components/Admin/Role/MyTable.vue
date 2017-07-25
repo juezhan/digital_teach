@@ -3,9 +3,9 @@
   <div id="dataTable">
     <el-table slot="container" :data="dataList" border style="width: 100%">
       <!--<template scope="scope">-->
-      <el-table-column v-for="(col, index) in colData" :prop="col.prop" :label="col.label" :key="col.id"/>
+      <!--<el-table-column v-for="(col, index) in colData" :prop="col.prop" :label="col.label" :key="col.id"/>-->
       <!--</template>-->
-
+      <slot name="column"></slot>
       <el-table-column label="操作" width="100">
         <template scope="scope">
           <el-button v-show="btnView" type="text" size="small" @click="alertIndex(scope.row)">查看</el-button>
@@ -32,7 +32,7 @@
   export default{
     data() {
       return {
-        name: 'Role',
+        name: 'KalixTable',
         dataList: [],
         // 分页器
         pager: {
@@ -50,8 +50,8 @@
         default: ''
       },
       colData: {
-        type: Array,
-        required: true
+        type: Array
+//        required: true
       },
       btnOption: {
         type: Array,
@@ -87,7 +87,6 @@
           start: that.pager.start,
           limit: that.pager.limit
         }
-        this.listLoading = true
         axiosRequest.get({
           params: _data,
           url: this.targetUrl
@@ -95,18 +94,17 @@
 //          if(response.data)
           this.dataList = response.data.data
           that.pager.totalCount = response.data.totalCount
-          this.listLoading = false
         })
       },
       pagerSizeChange(val) {
         //  改变每页记录数
         this.pager.limit = val
-        this.getRoleList()
+        this.getDataList()
       },
       pagerCurrentChange(val) {
         //  翻页
         this.pager.currentPage = val
-        this.getRoleList()
+        this.getDataList()
       }
     },
     components: {}

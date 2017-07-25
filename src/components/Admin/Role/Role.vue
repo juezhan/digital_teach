@@ -1,10 +1,13 @@
 <template>
   <div>
-    <kalix-table :targetUrl="roleUrl" :colData="roleColData"></kalix-table>
+    <kalix-table :targetUrl="roleUrl" :colData="roleColData">
+      <kalix-role-column slot="column"></kalix-role-column>
+    </kalix-table>
   </div>
 </template>
 <script>
   import mytable from './MyTable'
+  import RoleColumn from './RoleColumn'
   import { RoleListUrl } from '../../../api/config'
   export default ({
     data() {
@@ -22,7 +25,8 @@
       }
     },
     components: {
-      kalixTable: mytable
+      kalixTable: mytable,
+      kalixRoleColumn: RoleColumn
     }
 
   })
