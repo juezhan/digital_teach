@@ -12,6 +12,7 @@ import store from './store/store'
 
 import Search from './comm/Search/Search.vue'
 import Wrapper from './comm/Wrapper/Wrapper.vue'
+import KalixDialog from './comm/KalixDialog/KalixDialog.vue'
 import InputCell from './comm/InputCell/InputCell.vue'
 
 Vue.use(Vuex)
@@ -20,6 +21,7 @@ Vue.use(ElementUI)
 Vue.component('search', Search)
 Vue.component('wrapper', Wrapper)
 Vue.component('input-cell', InputCell)
+Vue.component('kalix-dialog', KalixDialog)
 Vue.use(router)
 
 /* eslint-disable no-new */

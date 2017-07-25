@@ -16,16 +16,23 @@
         </el-form-item>
       </el-form>
     </search>
-    <wrapper ref='myWrapper' :title="'字典列表'" :icon="'iconfont icon-dict-management'">
+    <wrapper ref='myWrapper' :title="'字典列表'" :icon="'iconfont icon-dict-management'"
+             :dataUrl="dataUrl"
+             :dataSearchObj="search.obj"
+             :requestData="requestData"
+             @tableView="tableView"
+             @tableEdit="tableEdit"
+             @tableDelete="tableDelete"
+    >
       <!-- 按钮 -->
       <div slot="toolbar">
-        <el-button @click="openDialogForm" type="primary"><i class="iconfont icon-add"></i>添加</el-button>
+        <el-button @click="addData" type="primary"><i class="iconfont icon-add"></i>添加</el-button>
       </div>
       <!-- 列表 -->
-      <el-table slot="container" border :data="scheduleDicts" :height="tebleHegiht">
+      <template slot="container">
         <el-table-column label="行号" width="70">
           <template scope="scope">
-            <div style="text-align: center">{{ scope.$index+rowNo}}</div>
+            <div style="text-align: center">{{ scope.row.rowNumber}}</div>
           </template>
         </el-table-column>
         <el-table-column prop="type" label="类型" width="180"></el-table-column>
@@ -33,36 +40,18 @@
         <el-table-column prop="value" label="数值" width="70"></el-table-column>
         <el-table-column prop="createBy" label="创建人" width="120"></el-table-column>
         <el-table-column prop="creationDate" label="创建日期"></el-table-column>
-        <el-table-column label="操作" width="150">
-          <template scope="scope">
-            <el-button type="text" size="small" @click="taberDetail(scope.$index, scope.row)">查看</el-button>
-            <el-button type="text" size="small" @click="taberEdit(scope.$index, scope.row)">编辑</el-button>
-            <el-button type="text" size="small" @click="taberDelete(scope.$index, scope.row)">删除</el-button>
-          </template>
-        </el-table-column>
-      </el-table>
-      <!-- 分页器 -->
-      <el-pagination slot="pagination" v-if="pager.totalCount"
-                     @size-change="pagerSizeChange"
-                     @current-change="pagerCurrentChange"
-                     :current-page="pager.currentPage"
-                     :page-sizes="pager.pageSizes"
-                     :page-size="1"
-                     layout="total, sizes, prev, pager, next, jumper"
-                     :total="pager.totalCount">
-      </el-pagination>
+      </template>
     </wrapper>
-
     <!-- 对话框 -->
-    <el-dialog :title="dialog.title" :visible.sync="dialog.visible" class="dialog-form"
-               :before-close="dialogFormCancel">
+    <kalix-dialog ref="kalixDialog">
       <el-form :model="dialog.form" :rules="dialog.rules" ref="dialogForm" :label-width="'80px'">
         <el-form-item v-if="dialog.isDetail" label="类型" prop="type">
           <el-input v-model="dialog.form.type" :readonly="dialog.isDetail" auto-complete="off"></el-input>
         </el-form-item>
         <el-form-item v-else label="类型" prop="type">
           <el-select v-model="dialog.form.type">
-            <el-option v-for="item in dialog.form.types" :label="item.name" :value="item.name"></el-option>
+            <el-option v-for="item in dialog.form.types" :key="item.name" :label="item.name"
+                       :value="item.name"></el-option>
           </el-select>
         </el-form-item>
         <el-form-item label="标签名" prop="label">
@@ -77,7 +66,7 @@
                     placeholder="请输入内容"></el-input>
         </el-form-item>
       </el-form>
-      <div slot="footer" class="dialog-footer">
+      <div class="dialog-footer">
         <template v-if="dialog.isDetail">
           <el-button type="primary" @click="dialogFormCancel">关 闭</el-button>
         </template>
@@ -86,17 +75,22 @@
           <el-button type="primary" @click="dialogFormSubmit">提 交</el-button>
         </template>
       </div>
-    </el-dialog>
+    </kalix-dialog>
 
   </div>
 </template>
 
 <script type="text/ecmascript-6">
-  import {getDC} from '../../../api/base'
-  import {ScheduleDicts, PageConfig, ScheduleDictsTypesList} from '../../../api/config'
-  import {strToUnicode} from '../../../unit/unicode-convert'
-  import axiosRequest from '../../../axios/axios-request'
-  import Message from '../../../js/message'
+  import {getDC} from 'api/base'
+  import {ScheduleDicts, ScheduleDictsTypesList, PageConfig} from 'api/config'
+  //  import {ScheduleDicts, PageConfig, ScheduleDictsTypesList} from 'api/config'
+  import {strToUnicode} from 'unit/unicode-convert'
+  import axiosRequest from 'axiosjs/axios-request'
+  import Message from 'js/message'
+  //  import MyTableMethods from 'js/MyTableMethods'
+  import KalixTableButtons from 'comm/Wrapper/KalixTableButtons.vue'
+  import KalixTable from 'comm/KalixTable/KalixTable'
+  import KalixPager from 'comm/KalixPager/KalixPager'
 
   let dialogFormTypes = []
 
@@ -116,9 +110,13 @@
 //        }
       }
       return {
+        dataUrl: ScheduleDicts,
+        requestData: {},
+        pageLimit: PageConfig.sizes[0],
         // 搜索框
         search: {
           title: '字典查询',
+          obj: {},          // 搜索内容
           form: {
             type: ''
           },
@@ -130,19 +128,8 @@
         },
         // 数据列表
         scheduleDicts: [],
-        // 表格搞定
-        tebleHegiht: 0,
-        // 分页器
-        pager: {
-          totalCount: 0,
-          pageSizes: [],
-          currentPage: 1,
-          limit: 0,
-          start: 0
-        },
         // 对话框
         dialog: {
-          title: '',
           visible: false,
           isDetail: false,
           // 对话框表单
@@ -165,49 +152,107 @@
       }
     },
     created() {
+      this.tableIsScroll = true
+      this.roleUrl = ScheduleDicts
+      this.roleColData = [
+        {prop: 'type', label: '类型', width: 180},
+        {prop: 'label', label: '签名', width: 180},
+        {prop: 'value', label: '数值', width: 70},
+        {prop: 'createBy', label: '创建人', width: 120},
+        {prop: 'creationDate', label: '创建日期'}
+      ]
+      this.btnOption = ['btnEdit', 'btnDelete', 'btnView']
       this.defaultDialogForm = JSON.parse(JSON.stringify(this.$data.dialog.form))
+      this.requestData = {}
     },
     mounted() {
-      // 初始化数据列表
-      this._getScheduleDictsList()
-      // 初始化表格
-      this._initWrapperContainerHeight()
     },
     methods: {
-      _getScheduleDictsList(isFlag) {
-        // 初始化 table 数据
+      searchFormSubmit() {
+        // 查询
         let that = this
-        //  检查是否是第一次执行
-        if (!isFlag) {
-          //  初始化分页控件
-          that.pager.limit = PageConfig.sizes[0]
-          that.pager.pageSizes = PageConfig.sizes
-          that.pager.currentPage = PageConfig.page
-          that.pager.start = PageConfig.start
-        }
-        let _data = {
-          _dc: getDC(),
-          page: that.pager.currentPage,
-          start: that.pager.start,
-          limit: that.pager.limit
-        }
         if (that.search.form.type.length > 0) {
-          _data = Object.assign({}, _data, {jsonStr: '{"%type%": "' + strToUnicode(that.search.form.type) + '"}'})
+          that.search.obj = {jsonStr: '{"%type%": "' + strToUnicode(that.search.form.type) + '"}'}
+          that.$refs.myWrapper.getDataList(true)
         }
-        axiosRequest.get({
-          url: ScheduleDicts,
-          params: _data
-        }).then(response => {
-          that.scheduleDicts = response.data.data
-          that.pager.totalCount = response.data.totalCount
+      },
+      resetSearchForm() {
+        // 重置搜索框
+        this.search.obj = {}
+        this.$refs.searchForm.resetFields()
+        this.$refs.myWrapper.getDataList(true)
+      },
+      addData() {
+        // 打开对话框
+        this._showDetail({
+          title: '添加',
+          isDetail: false
         })
       },
-      _initWrapperContainerHeight() {
-        //  计算 table 容器高度
-        this.tebleHegiht = this.$refs.myWrapper.getContainerHeight()
-        // 清理 table 横向滚动条
-        let tbWrapper = document.getElementsByClassName('el-table__body-wrapper')
-        tbWrapper[0].style.overflowX = 'hidden'
+      dialogFormSubmit() {
+        // 提交对话框
+        let that = this
+        that.$refs.dialogForm.validate((valid) => {
+          if (valid) {
+            let _data = {
+              id: that.dialog.form.id,
+              description: that.dialog.form.description,
+              label: that.dialog.form.label,
+              type: that.dialog.form.type
+            }
+            axiosRequest.post({
+              url: ScheduleDicts,
+              params: {_dc: getDC()},
+              data: _data
+            }).then(response => {
+              if (response.data.success) {
+                Message.success('response.data.msg')
+                // 关闭对话框
+                that.dialogFormCancel()
+                // 刷新列表
+                that.$refs.myWrapper.getDataList(true)
+              } else {
+                Message.error(response.data.msg)
+              }
+            })
+          } else {
+            return false
+          }
+        })
+      },
+      dialogFormCancel() {
+        // 关闭对话框
+        this.dialog.isDetail = false
+        this.$data.dialog.form = Object.assign({}, this.defaultDialogForm)
+        this.$refs.dialogForm.resetFields()
+        this.$refs.kalixDialog.close()
+      },
+      tableView(row) {
+        this._showDetail({
+          title: '查看',
+          isDetail: true,
+          row: row
+        })
+      },
+      tableEdit(row) {
+        this._showDetail({
+          title: '修改',
+          isDetail: false,
+          row: row
+        })
+      },
+      tableDelete(row) {
+        //  删除记录
+        axiosRequest.delete({
+          url: ScheduleDicts + '/' + row.id,
+          params: {_dc: getDC()},
+          data: {
+            id: row.id
+          }
+        }).then(response => {
+          Message.success(response.data.msg)
+          this.$refs.kalixTable.refresh()
+        })
       },
       _getTypes() {
         // 加载类型选项
@@ -231,120 +276,27 @@
           dialogFormTypes = response.data
         })
       },
-      pagerSizeChange(val) {
-        //  改变每页记录数
+      _showDetail(params) {
+        // 显示对话框
         let that = this
-        that.pager.limit = val
-        that._getScheduleDictsList(true)
-      },
-      pagerCurrentChange(val) {
-        //  翻页
-        let that = this
-        that.pager.currentPage = val
-        that._getScheduleDictsList(true)
-      },
-      searchFormSubmit() {
-        // 查询
-        if (this.search.form.type.length > 0) {
-          this._getScheduleDictsList(true)
+        that.dialog.isDetail = params.isDetail
+        if (!params.isDetail) {
+          that._getTypes()
         }
-      },
-      resetSearchForm() {
-        // 重置搜索框
-        this.$refs.searchForm.resetFields()
-      },
-      openDialogForm() {
-        // 打开对话框
-        let that = this
-        that.dialog.visible = true
-        that.dialog.title = '添加'
-        that._getTypes()
-      },
-      dialogFormSubmit() {
-        // 提交对话框
-        let that = this
-        that.$refs.dialogForm.validate((valid) => {
-          if (valid) {
-            let _data = {
-              id: that.dialog.form.id,
-              description: that.dialog.form.description,
-              label: that.dialog.form.label,
-              type: that.dialog.form.type
-            }
-            axiosRequest.post({
-              url: ScheduleDicts,
-              params: {_dc: getDC()},
-              data: _data
-            }).then(response => {
-              if (response.data.success) {
-                Message.success('response.data.msg')
-                // 关闭对话框
-                that.dialogFormCancel()
-                // 刷新列表
-                that._getScheduleDictsList(false)
-                that.$refs.dialogForm.resetFields()
-                that.dialog.form.description = ''
-              } else {
-                Message.error(response.data.msg)
-              }
-            })
-          } else {
-            return false
-          }
-        })
-      },
-      dialogFormCancel() {
-        // 关闭对话框
-        this.dialog.visible = false
-        this.dialog.title = ''
-        this.dialog.isDetail = false
-        this.$data.dialog.form = Object.assign({}, this.defaultDialogForm)
-      },
-      taberDetail(index, row) {
-        this.dialog.isDetail = true
-        this.dialog.title = '查看'
-        this._showDetail(index, row)
-      },
-      taberEdit(index, row) {
-        this.dialog.isDetail = false
-        this.dialog.title = '修改'
-        this._getTypes()
-        this._showDetail(index, row)
-      },
-      taberDelete(index, row) {
-        //  删除记录
-        this.$confirm('确定要删除吗?', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
-        }).then(() => {
-          axiosRequest.delete({
-            url: ScheduleDicts + '/' + row.id,
-            params: {_dc: getDC()},
-            data: {
-              id: row.id
-            }
-          }).then(response => {
-            Message.success(response.data.msg)
-            this._getScheduleDictsList(false)
-          })
-        }).catch(() => {
-        })
-      },
-      _showDetail(index, row) {
-        let that = this
-        that.dialog.form.id = row.id
-        that.dialog.form.description = row.description
-        that.dialog.form.label = row.label
-        that.dialog.form.type = row.type
-        that.dialog.visible = true
+        if (params.row) {
+          let row = params.row
+          that.dialog.form.id = row.id
+          that.dialog.form.description = row.description
+          that.dialog.form.label = row.label
+          that.dialog.form.type = row.type
+        }
+        that.$refs.kalixDialog.open(params.title)
       }
     },
-    computed: {
-      rowNo () {
-        // 返回当前行号
-        return (1 + ((this.pager.currentPage - 1) * this.pager.limit))
-      }
+    components: {
+      KalixTableButtons,
+      KalixTable,
+      KalixPager
     }
   }
 </script>
