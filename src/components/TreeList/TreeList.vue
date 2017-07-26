@@ -34,7 +34,7 @@
 <script>
   import Vue from 'vue'
   //  import axios from 'axios'
-  import {CacheTime, RequestApi} from '../../api/config'
+  import {CacheTime, RequestApi} from 'api/config'
 
   export default {
     props: {
@@ -128,6 +128,7 @@
     text-align: left;
     overflow: hidden;
     transition: width .2s;
+    z-index: 9999;
     li {
       width: 250px;
     }

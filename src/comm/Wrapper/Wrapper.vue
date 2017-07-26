@@ -6,16 +6,40 @@
         <slot name="toolbar"></slot>
       </div>
       <div class="container" ref="wrapperContainer">
-        <slot name="container"></slot>
+        <kalix-table ref="kalixTable"
+                     :targetUrl="dataUrl"
+                     :btnOption="btnOption"
+                     :isScroll="tableIsScroll"
+                     :requestData="requestData"
+                     :currentPage="pager.currentPage"
+                     :limit="pager.limit"
+                     :height="tableHegiht"
+                     @tableView="tableView"
+                     @tableEdit="tableEdit"
+                     @tableDelete="tableDelete"
+                     @getTotalCount="setTotalCount"
+        >
+          <template slot="tableColumn">
+            <slot name="container"></slot>
+          </template>
+        </kalix-table>
       </div>
       <div class="pagination">
-        <slot name="pagination"></slot>
+        <kalix-pager slot="pagination" :currentPage="pager.currentPage" :totalCount="pager.totalCount"
+                     :limit="pager.limit"
+                     @pagerCurrentChange="pagerCurrentChange"
+                     @pagerSizeChange="pagerSizeChange"
+        ></kalix-pager>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+  import {PageConfig} from 'api/config'
+  import KalixTable from 'comm/KalixTable/KalixTable'
+  import KalixPager from 'comm/KalixPager/KalixPager'
+
   export default{
     props: {
       title: {
@@ -25,18 +49,83 @@
       icon: {
         type: String,
         default: ''
+      },
+      dataUrl: {
+        type: String,
+        default: ''
+      },
+      dataSearchObj: {
+        type: Object,
+        default: {}
+      },
+      requestData: {
+        type: Object,
+        default: {}
       }
     },
     data() {
-      return {}
-    },
-    methods: {
-      getContainerHeight() {
-        return this.$refs.wrapperContainer.scrollHeight
+      return {
+        tableHegiht: 0,
+        // 数据列表
+        dataList: [],
+        // 分页器
+        pager: {
+          totalCount: 0,
+          pageSizes: [],
+          currentPage: 1,
+          limit: PageConfig.sizes[0],
+          start: 0
+        }
       }
     },
-    components: {},
-    computed: {}
+    created() {
+      this.btnOption = ['btnEdit', 'btnDelete', 'btnView']
+      this.tableIsScroll = true
+    },
+    mounted() {
+      this.setTableHeight()
+    },
+    methods: {
+      setTableHeight() {
+        this.tableHegiht = this.$refs.wrapperContainer.scrollHeight
+      },
+      pagerSizeChange(val) {
+        //  改变每页记录数
+        this.pager.limit = val
+        this.$refs.kalixTable.refresh()
+      },
+      pagerCurrentChange(val) {
+        //  翻页
+        this.pager.currentPage = val
+        this.$refs.kalixTable.refresh()
+      },
+      tableRowClassName(row, index) {
+        // 设置行样式
+        return this.$parent.rowClassName && this.$parent.rowClassName(row, index)
+      },
+      tableView(row) {
+        this.$emit('tableView', row)
+      },
+      tableEdit(row) {
+        this.$emit('tableEdit', row)
+      },
+      tableDelete(row) {
+        this.$emit('tableDelete', row)
+      },
+      setTotalCount(totalCount) {
+        this.pager.totalCount = totalCount
+      }
+    },
+    components: {
+      KalixTable,
+      KalixPager
+    },
+    computed: {
+      rowNo () {
+        // 返回当前行号
+        return (1 + ((this.pager.currentPage - 1) * this.pager.limit))
+      }
+    }
   }
 </script>
 
@@ -78,6 +167,9 @@
         left: 0;
         top: 104px;
         text-align: left;
+        .el-table .info-row {
+          background-color: $bc-att;
+        }
       }
       .pagination {
         text-align: left;

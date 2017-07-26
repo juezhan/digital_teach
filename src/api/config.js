@@ -30,7 +30,7 @@ export const ScheduleDicts = RequestAdmin + '/camel/rest/schedule/dicts'
 //  分页配置
 export const PageConfig = {
   sizes: [20, 30, 40],
-  limit: 20,
+  limit: 0,
   page: 1,
   start: 0
 }

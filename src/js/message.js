@@ -4,7 +4,7 @@
 import ElementUI from 'element-ui'
 export default {
   message(_type, _msg, _showClose = true) {
-    ElementUI.Message.message({
+    ElementUI.Message({
       type: _type,
       showClose: _showClose,
       message: _msg
