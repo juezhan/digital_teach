@@ -12,14 +12,14 @@
     </el-table-column>
     <el-table-column label="创建日期">
       <template scope="scope">
-        <span>{{scope.row.creationDate | filterTime}}</span>
+        <span>{{scope.row.creationDate }}</span>
       </template>
     </el-table-column>
     <el-table-column prop="createBy" label="创建人"></el-table-column>
   </div>
 </template>
 <script type="text/ecmascript-6">
-  import * as filter from '../../../filters'
+  import * as filter from 'filters'
   export default {
     filters: {
       filterSex(sex) {
@@ -30,7 +30,8 @@
         return statusMap[sex]
       },
       filterTime(value) {
-        return filter.formatTime(value)
+        let v = Date.parse(value) / 1000
+        return filter.formatTime(v)
       }
     }
   }
