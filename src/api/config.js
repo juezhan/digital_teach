@@ -27,6 +27,8 @@ export const RoleListUrl = RequestAdmin + '/camel/rest/users'
 //  字典列表
 export const ScheduleDicts = RequestAdmin + '/camel/rest/schedule/dicts'
 
+//  按钮授权
+export const SecurityUrl = RequestAdmin + '/camel/rest/system/applications/modules/children/buttons/'
 //  分页配置
 export const PageConfig = {
   sizes: [20, 30, 40],

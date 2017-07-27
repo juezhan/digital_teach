@@ -1,5 +1,5 @@
 <template>
-  <el-table-row ref="templateColumn">
+  <div>
     <el-table-column type="index" label="行号" width="50"></el-table-column>
     <el-table-column prop="id" label="头像"></el-table-column>
     <el-table-column prop="id" label="工号"></el-table-column>
@@ -16,7 +16,7 @@
       </template>
     </el-table-column>
     <el-table-column prop="createBy" label="创建人"></el-table-column>
-  </el-table-row>
+  </div>
 </template>
 <script type="text/ecmascript-6">
   import * as filter from 'filters'
