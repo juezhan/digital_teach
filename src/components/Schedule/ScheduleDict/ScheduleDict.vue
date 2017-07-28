@@ -53,6 +53,7 @@
       }
       return {
         dataUrl: ScheduleDicts,
+        // 请求参数
         requestData: {},
         // 搜索框
         search: {
@@ -88,14 +89,7 @@
       },
       addData() {
         // 打开对话框
-        this._showDetail({
-          title: '添加',
-          isView: false
-        })
-      },
-      _showDetail(params) {
-        // 显示对话框
-        this.$refs.kalixDialog.open(params.title)
+        this.$refs.kalixDialog.open('添加')
       }
     },
     components: {

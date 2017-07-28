@@ -25,8 +25,7 @@
         <kalix-pager slot="pagination" :currentPage="pager.currentPage" :totalCount="pager.totalCount"
                      :limit="pager.limit"
                      @pagerCurrentChange="pagerCurrentChange"
-                     @pagerSizeChange="pagerSizeChange"
-        ></kalix-pager>
+                     @pagerSizeChange="pagerSizeChange"></kalix-pager>
       </div>
     </div>
   </div>

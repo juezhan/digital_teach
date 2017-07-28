@@ -37,7 +37,8 @@
     data() {
       return {
         title: '',
-        visible: false
+        visible: false,
+        isView: false
       }
     },
     created() {
@@ -48,9 +49,12 @@
     activated() {
     },
     methods: {
-      open(title) {
+      open(title, isView) {
         this.title = title
         this.visible = true
+        if (isView) {
+          this.isView = isView
+        }
       },
       close() {
         this.visible = false
