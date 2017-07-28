@@ -1,7 +1,7 @@
 <template>
   <div>
     <el-form-item v-if="isView" label="类型" prop="type">
-      <el-input v-model="$parent.formModel.type" :readonly="isView" auto-complete="off"></el-input>
+      <el-input v-model="formModel.type" :readonly="isView" auto-complete="off"></el-input>
     </el-form-item>
     <el-form-item v-else label="类型" prop="type">
       <el-select v-model="formModel.type">
@@ -24,7 +24,7 @@
 </template>
 
 <script type="text/ecmascript-6">
-  import {ScheduleDictsTypesList, ScheduleDicts} from 'api/config'
+  import { ScheduleDictsTypesList } from 'api/config'
   import axiosRequest from 'axiosjs/axios-request'
 
   const DIALOG_FORM_TYPES_KEY = 'ScheduleDictDialogFormTypes'
@@ -34,6 +34,9 @@
       isView: {
         type: Boolean,
         default: false
+      },
+      formModel: {
+        type: Object
       }
     },
     data() {
