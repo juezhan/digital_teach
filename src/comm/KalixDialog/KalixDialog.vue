@@ -3,7 +3,7 @@
              :before-close="close">
     <slot name="dialog-container"></slot>
     <div slot="footer" class="dialog-footer">
-      <template v-if="isDetail">
+      <template v-if="isView">
         <el-button type="primary" @click="clickCancel">关 闭</el-button>
       </template>
       <template v-else>
@@ -17,7 +17,7 @@
 <script type="text/ecmascript-6">
   export default {
     props: {
-      isDetail: {
+      isView: {
         type: Boolean,
         default: false
       },
@@ -27,11 +27,11 @@
       },
       handerButtonCancle: {
         type: String,
-        default: ''
+        default: 'dialogFormCancel'
       },
       handerButtonSubmit: {
         type: String,
-        default: ''
+        default: 'dialogFormSubmit'
       }
     },
     data() {

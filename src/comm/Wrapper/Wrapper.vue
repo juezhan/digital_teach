@@ -51,10 +51,6 @@
         type: String,
         default: ''
       },
-      dataSearchObj: {
-        type: Object,
-        default: {}
-      },
       requestData: {
         type: Object,
         default: {}
