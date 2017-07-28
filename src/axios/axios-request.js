@@ -2,7 +2,8 @@
  * axios 请求
  * Created by 桑杨 on 2017/7/21.
  */
-import Vue from 'vue'
+import Vue from "vue";
+import {getDC} from "api/base";
 
 export default {
   get(_params) {
@@ -16,6 +17,7 @@ export default {
   },
   request(_params) {
     let params = _params || {}
+    params.params = Object.assign(params.params, {_dc: getDC()})
     return Vue.axios(params)
   }
 }

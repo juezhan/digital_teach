@@ -24,7 +24,6 @@
 </template>
 
 <script type="text/ecmascript-6">
-  import {getDC} from 'api/base'
   import {ScheduleDictsTypesList, ScheduleDicts} from 'api/config'
   import axiosRequest from 'axiosjs/axios-request'
   import Message from 'js/message'
@@ -74,7 +73,6 @@
           return
         }
         let _data = {
-          _dc: getDC(),
           query: '',
           page: 1,
           start: 0,
@@ -108,7 +106,6 @@
             }
             axiosRequest.post({
               url: ScheduleDicts,
-              params: {_dc: getDC()},
               data: _data
             }).then(response => {
               if (response.data.success) {

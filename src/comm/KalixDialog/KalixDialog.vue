@@ -17,10 +17,6 @@
 <script type="text/ecmascript-6">
   export default {
     props: {
-      isView: {
-        type: Boolean,
-        default: false
-      },
       formName: {
         type: String,
         default: ''
