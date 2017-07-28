@@ -1,19 +1,12 @@
 <template>
   <!--角色管理-->
   <div id="dataTable">
-    <el-table slot="container" :data="dataList"  border style="width: 100%">
+    <el-table slot="container" :data="dataList" border style="width: 100%">
       <!--<template scope="scope">-->
       <!--<el-table-column v-for="(col, index) in colData" :prop="col.prop" :label="col.label" :key="col.id"/>-->
       <!--</template>-->
       <slot v-if="dataList.length" name="column"></slot>
-
-      <el-table-column label="操作" width="100">
-        <template scope="scope">
-          <el-button v-show="btnView" type="text" size="small" @click="alertIndex(scope.row)">查看</el-button>
-          <el-button v-show="btnEdit" type="text" size="small">编辑</el-button>
-          <el-button v-show="btnDelete" type="text" size="small">删除</el-button>
-        </template>
-      </el-table-column>
+      <slot v-if="dataList.length" name="toolColumn"></slot>
 
     </el-table>
     <el-pagination slot="pagination" v-if="pager.totalCount"
@@ -29,8 +22,9 @@
 </template>
 
 <script>
-  import {PageConfig} from '../../../api/config'
+  import { PageConfig } from '../../../api/config'
   import axiosRequest from '../../../axios/axios-request'
+
   export default{
     data() {
       return {
@@ -54,28 +48,12 @@
       colData: {
         type: Array
 //        required: true
-      },
-      btnOption: {
-        type: Array,
-        default: () => {
-          return ['btnView', 'btnEdit', 'btnDelete']
-        }
       }
     },
     mounted() {
       this.getDataList()
     },
     computed: {
-      btnEdit () {
-        return (this.btnOption.indexOf('btnEdit') > -1)
-      },
-      btnDelete () {
-        return (this.btnOption.indexOf('btnDelete') > -1)
-      },
-      btnView () {
-        return (this.btnOption.indexOf('btnView') > -1)
-      }
-
     },
     methods: {
       alertIndex(index, row) {

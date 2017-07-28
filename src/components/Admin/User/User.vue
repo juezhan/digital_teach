@@ -66,7 +66,8 @@
         </el-form-item>
         <el-form-item v-else label="类型" prop="type">
           <el-select v-model="dialog.form.type">
-            <el-option v-for="item in dialog.form.types" :label="item.name" :value="item.name"></el-option>
+            <el-option v-for="item in dialog.form.types" :label="item.name" :value="item.name"
+                       :key="item.id"></el-option>
           </el-select>
         </el-form-item>
         <el-form-item label="标签名" prop="label">
