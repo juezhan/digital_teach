@@ -2,8 +2,8 @@
  * axios 请求
  * Created by 桑杨 on 2017/7/21.
  */
-import Vue from "vue";
-import {getDC} from "api/base";
+import Vue from 'vue'
+import {getDC} from 'api/base'
 
 export default {
   get(_params) {
