@@ -24,7 +24,7 @@
 </template>
 
 <script type="text/ecmascript-6">
-  import { ScheduleDictsTypesList } from 'api/config'
+  import {ScheduleDictsTypesList} from 'api/config'
   import axiosRequest from 'axiosjs/axios-request'
 
   const DIALOG_FORM_TYPES_KEY = 'ScheduleDictDialogFormTypes'
@@ -45,10 +45,15 @@
       }
     },
     mounted() {
-      console.log(this.$parent.$parent.formModel)
-      this._getTypes()
+//      console.log(this.$parent.$parent.formModel)
+//      this._getTypes()
+    },
+    updated() {
     },
     methods: {
+      init() {
+        this._getTypes()
+      },
       _getTypes() {
         // 加载类型选项
         let that = this

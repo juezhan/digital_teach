@@ -60,6 +60,7 @@
     },
     created() {
       this.parentForm = this.$parent.$refs[this.formName]
+      this.tempFormModel = JSON.stringify(Object.assign({}, this.formModel))
     },
     mounted() {
     },
@@ -72,6 +73,10 @@
         if (isView) {
           this.isView = isView
         }
+        setTimeout(() => {
+          let targetForm = this.$parent.$refs[this.formName]
+          targetForm.init()
+        }, 20)
       },
       close() {
         this.visible = false
@@ -104,6 +109,9 @@
                 this.close()
                 // 刷新列表
                 this.$emit('refreshData')
+                // 清空form
+                this.$parent.resetDialogForm()
+//                this.$emit('resetDialogForm')
               } else {
                 Message.error(response.data.msg)
               }

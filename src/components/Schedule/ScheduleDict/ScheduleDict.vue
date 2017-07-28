@@ -29,8 +29,10 @@
     </kalix-wrapper>
     <!-- 对话框 -->
     <kalix-dialog ref="kalixDialog"
-                  :form-name="'kalixScheduleDitDialogForm'" :formModel="formModel" :rules="rules" :data-url="dataUrl"
-                  @refreshData="()=>{$refs.myWrapper.refresh()}">
+                  :form-model="formModel"
+                  :form-name="'kalixScheduleDitDialogForm'" :rules="rules" :data-url="dataUrl"
+                  @refreshData="()=>{$refs.myWrapper.refresh()}"
+                  @resetDialogForm="resetDialogForm">
       <kalix-dialog-form slot="dialog-container"
                          ref="kalixScheduleDitDialogForm" :formModel="formModel"></kalix-dialog-form>
     </kalix-dialog>
@@ -84,6 +86,7 @@
       }
     },
     created() {
+      this.tempFormModel = JSON.stringify(Object.assign({}, this.formModel))
     },
     mounted() {
     },
@@ -108,6 +111,10 @@
       },
       refresh () {
         this.$refs.myWrapper.refresh()
+      },
+      resetDialogForm() {
+        // 清空form
+        this.formModel = JSON.parse(this.tempFormModel)
       }
     },
     components: {
