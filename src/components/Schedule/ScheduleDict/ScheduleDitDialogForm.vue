@@ -24,8 +24,7 @@
 </template>
 
 <script type="text/ecmascript-6">
-  import { getDC } from 'api/base'
-  import { ScheduleDictsTypesList } from 'api/config'
+  import {ScheduleDictsTypesList, ScheduleDicts} from 'api/config'
   import axiosRequest from 'axiosjs/axios-request'
 
   const DIALOG_FORM_TYPES_KEY = 'ScheduleDictDialogFormTypes'
@@ -35,9 +34,6 @@
       isView: {
         type: Boolean,
         default: false
-      },
-      formModel: {
-        type: Object
       }
     },
     data() {
@@ -57,7 +53,6 @@
           return
         }
         let _data = {
-          _dc: getDC(),
           query: '',
           page: 1,
           start: 0,
