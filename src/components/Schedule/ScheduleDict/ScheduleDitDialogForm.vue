@@ -45,6 +45,7 @@
       }
     },
     mounted() {
+      console.log(this.$parent.$parent.formModel)
       this._getTypes()
     },
     methods: {

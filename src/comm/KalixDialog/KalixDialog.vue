@@ -93,20 +93,15 @@
         let that = this
         that.$refs.dialogForm.validate((valid) => {
           if (valid) {
-            let _data = {
-              id: that.formModel.id,
-              description: that.formModel.description,
-              label: that.formModel.label,
-              type: that.formModel.type
-            }
             axiosRequest.post({
               url: this.dataUrl,
-              data: _data
+              data: this.formModel,
+              params: {}
             }).then(response => {
               if (response.data.success) {
                 Message.success(response.data.msg)
                 // 关闭对话框
-                that.dialogFormCancel()
+                this.close()
                 // 刷新列表
                 this.$emit('refreshData')
               } else {

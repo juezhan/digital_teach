@@ -22,17 +22,17 @@
       <!-- 按钮 -->
       <div slot="toolbar">
         <el-button @click="addData" type="primary"><i class="iconfont icon-add"></i>添加</el-button>
+        <el-button @click="refresh" type="primary"><i class="iconfont icon-refresh"></i>刷新</el-button>
       </div>
       <!-- 列表 -->
       <kalix-table-columns slot="container"></kalix-table-columns>
     </kalix-wrapper>
     <!-- 对话框 -->
     <kalix-dialog ref="kalixDialog"
-                  :form-name="'kalixScheduleDitDialogForm'" :formModel="formModel" :rules="rules" :data-url="dataUrl">
+                  :form-name="'kalixScheduleDitDialogForm'" :formModel="formModel" :rules="rules" :data-url="dataUrl"
+                  @refreshData="()=>{$refs.myWrapper.refresh()}">
       <kalix-dialog-form slot="dialog-container"
-                         ref="kalixScheduleDitDialogForm" :formModel="formModel"
-                         @dialogFormCancel="()=>{$refs.kalixDialog.close()}"
-                         @refreshData="()=>{$refs.myWrapper.refresh()}"></kalix-dialog-form>
+                         ref="kalixScheduleDitDialogForm" :formModel="formModel"></kalix-dialog-form>
     </kalix-dialog>
   </div>
 </template>
@@ -105,6 +105,9 @@
       addData() {
         // 打开对话框
         this.$refs.kalixDialog.open('添加')
+      },
+      refresh () {
+        this.$refs.myWrapper.refresh()
       }
     },
     components: {
