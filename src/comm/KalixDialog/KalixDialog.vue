@@ -61,7 +61,7 @@
       },
       clickCancel () {
         let targetForm = this.$parent.$refs[this.formName]
-        if (targetForm._events[this.handlerButtonCancel]) {
+        if (typeof (targetForm[this.handlerButtonCancel]) === 'function') {
           targetForm[this.handlerButtonCancel]()
         } else {
           this.close()
@@ -69,7 +69,7 @@
       },
       clickSubmit () {
         let targetForm = this.$parent.$refs[this.formName]
-        if (targetForm._events[this.handlerButtonSubmit]) {
+        if (typeof (targetForm[this.handlerButtonSubmit]) === 'function') {
           targetForm[this.handlerButtonSubmit]()
         }
       }
