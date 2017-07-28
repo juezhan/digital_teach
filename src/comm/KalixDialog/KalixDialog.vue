@@ -1,17 +1,51 @@
 <template>
-  <el-dialog :title="title" :visible.sync="visible" class="dialog-form"
+  <el-dialog :title="title" :visible="visible" class="dialog-form"
              :before-close="close">
-    <slot></slot>
+    <slot name="dialog-container"></slot>
+    <div slot="footer" class="dialog-footer">
+      <template v-if="isDetail">
+        <el-button type="primary" @click="clickCancel">关 闭</el-button>
+      </template>
+      <template v-else>
+        <el-button @click="clickCancel">取 消</el-button>
+        <el-button type="primary" @click="clickSubmit">提 交</el-button>
+      </template>
+    </div>
   </el-dialog>
 </template>
 
 <script type="text/ecmascript-6">
   export default {
+    props: {
+      isDetail: {
+        type: Boolean,
+        default: false
+      },
+      formName: {
+        type: String,
+        default: ''
+      },
+      handerButtonCancle: {
+        type: String,
+        default: ''
+      },
+      handerButtonSubmit: {
+        type: String,
+        default: ''
+      }
+    },
     data() {
       return {
         title: '',
         visible: false
       }
+    },
+    created() {
+      this.parentForm = this.$parent.$refs[this.formName]
+    },
+    mounted() {
+    },
+    activated() {
     },
     methods: {
       open(title) {
@@ -20,6 +54,20 @@
       },
       close() {
         this.visible = false
+      },
+      clickCancel () {
+        let targetForm = this.$parent.$refs[this.formName]
+        if (targetForm._events[this.handerButtonCancle]) {
+          targetForm[this.handerButtonCancle]()
+        } else {
+          this.close()
+        }
+      },
+      clickSubmit () {
+        let targetForm = this.$parent.$refs[this.formName]
+        if (targetForm._events[this.handerButtonSubmit]) {
+          targetForm[this.handerButtonSubmit]()
+        }
       }
     }
   }

@@ -1116,8 +1116,8 @@ caniuse-api@^1.5.2:
     lodash.uniq "^4.5.0"
 
 caniuse-db@^1.0.30000529, caniuse-db@^1.0.30000634, caniuse-db@^1.0.30000639:
-  version "1.0.30000706"
-  resolved "http://registry.npm.taobao.org/caniuse-db/download/caniuse-db-1.0.30000706.tgz#e2b5f0460573cbcc88a0985f5cced08f1617c6f5"
+  version "1.0.30000708"
+  resolved "http://registry.npm.taobao.org/caniuse-db/download/caniuse-db-1.0.30000708.tgz#c2e736bd3b7fc5f6c14e4c6dfe62b98ed15e8a5b"
 
 caniuse-lite@^1.0.30000704:
   version "1.0.30000706"

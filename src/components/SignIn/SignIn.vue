@@ -14,7 +14,7 @@
         <el-form-item label="密码" prop="pass">
           <el-input type="password" v-model="ruleForm.pass" auto-complete="off"></el-input>
         </el-form-item>
-        <el-form-item>
+        <el-form-item label=" " >
           <el-button type="primary" @click="onSubmit('ruleForm')" size="large" class="btn-submit">立即登录</el-button>
         </el-form-item>
       </el-form>

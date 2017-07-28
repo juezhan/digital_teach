@@ -3,7 +3,7 @@
             :data="dataList" border style="width: 100%"
             :row-class-name="tableRowClassName"
             :height="height" ref="kalixTable">
-    <slot name="tableColumn"></slot>
+    <slot v-if="dataList && dataList.length" name="tableColumn"></slot>
     <el-table-column label="操作" width="150">
       <template scope="scope">
         <el-button v-if="btnView" @click="tableView(scope.row)" type="text" size="small">查看</el-button>
@@ -18,6 +18,11 @@
   import {getDC} from 'api/base'
   import axiosRequest from 'axiosjs/axios-request'
   import {PageConfig} from 'api/config'
+  import Message from 'js/message'
+
+  const CLICK_TABLE_VIEW = 'tableView'
+  const CLICK_TABLE_EDIT = 'tableEdit'
+  const CLICK_TABLE_DELETE = 'tableDelete'
 
   export default {
     props: {
@@ -30,6 +35,12 @@
         type: Object,
         default: () => {
           return {}
+        }
+      },
+      dataDeleteUrl: {
+        type: String,
+        default: function () {
+          return null
         }
       },
       currentPage: {
@@ -75,11 +86,20 @@
       rowNo () {
         // 返回当前行号
         return (1 + ((this.currentPage - 1) * this.limit))
+      },
+      getDataDeleteUrl() {
+        return this.dataDeleteUrl || this.targetUrl
       }
     },
     mounted() {
       this.getDataList()
       this.setTableHeight()
+    },
+    watch: {
+      currentPage(val) {
+        console.log('currentPage:' + val)
+        this.refresh()
+      }
     },
     methods: {
       getDataList() {
@@ -101,6 +121,7 @@
               item.rowNumber = index + that.rowNo
               return item
             })
+            console.log(response.data.totalCount)
             that.$emit('getTotalCount', response.data.totalCount)
           }
         })
@@ -125,20 +146,38 @@
         }, 20)
       },
       tableView(row) {
-        this.$emit('tableView', row)
+        if (this._events[CLICK_TABLE_VIEW]) {
+          this.$emit(CLICK_TABLE_VIEW, row)
+        }
       },
       tableEdit(row) {
-        this.$emit('tableEdit', row)
+        if (this._events[CLICK_TABLE_EDIT]) {
+          this.$emit(CLICK_TABLE_EDIT, row)
+        }
       },
       tableDelete(row) {
-        this.$confirm('确定要删除吗?', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
-        }).then(() => {
-          this.$emit('tableDelete', row)
-        }).catch(() => {
-        })
+        if (this._events[CLICK_TABLE_DELETE]) {
+          this.$emit(CLICK_TABLE_DELETE, row)
+        } else {
+          this.$confirm('确定要删除吗?', '提示', {
+            confirmButtonText: '确定',
+            cancelButtonText: '取消',
+            type: 'warning'
+          }).then(() => {
+            axiosRequest.delete({
+              url: this.getDataDeleteUrl + '/' + row.id,
+              params: {_dc: getDC()},
+              data: {
+                id: row.id
+              }
+            }).then(response => {
+              this.refresh()
+              Message.success(response.data.msg)
+            }).catch(() => {
+            })
+          }).catch(() => {
+          })
+        }
       }
     }
   }

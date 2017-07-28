@@ -17,80 +17,41 @@
       </el-form>
     </search>
     <wrapper ref='myWrapper' :title="'字典列表'" :icon="'iconfont icon-dict-management'"
-             :dataUrl="dataUrl"
-             :dataSearchObj="search.obj"
-             :requestData="requestData"
-             @tableView="tableView"
-             @tableEdit="tableEdit"
-             @tableDelete="tableDelete"
+             :data-url="dataUrl"
+             :data-search-obj="search.obj"
+             :request-data="requestData"
     >
       <!-- 按钮 -->
       <div slot="toolbar">
         <el-button @click="addData" type="primary"><i class="iconfont icon-add"></i>添加</el-button>
       </div>
       <!-- 列表 -->
-      <template slot="container">
-        <el-table-column label="行号" width="70">
-          <template scope="scope">
-            <div style="text-align: center">{{ scope.row.rowNumber}}</div>
-          </template>
-        </el-table-column>
-        <el-table-column prop="type" label="类型" width="180"></el-table-column>
-        <el-table-column prop="label" label="签名" width="180"></el-table-column>
-        <el-table-column prop="value" label="数值" width="70"></el-table-column>
-        <el-table-column prop="createBy" label="创建人" width="120"></el-table-column>
-        <el-table-column prop="creationDate" label="创建日期"></el-table-column>
-      </template>
+      <kalix-table-columns slot="container"></kalix-table-columns>
     </wrapper>
     <!-- 对话框 -->
-    <kalix-dialog ref="kalixDialog">
-      <el-form :model="dialog.form" :rules="dialog.rules" ref="dialogForm" :label-width="'80px'">
-        <el-form-item v-if="dialog.isDetail" label="类型" prop="type">
-          <el-input v-model="dialog.form.type" :readonly="dialog.isDetail" auto-complete="off"></el-input>
-        </el-form-item>
-        <el-form-item v-else label="类型" prop="type">
-          <el-select v-model="dialog.form.type">
-            <el-option v-for="item in dialog.form.types" :key="item.name" :label="item.name"
-                       :value="item.name"></el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item label="标签名" prop="label">
-          <input type="hidden" v-model="dialog.form.id"/>
-          <el-input v-model="dialog.form.label" placeholder="请输入标签名" :readonly="dialog.isDetail"
-                    auto-complete="off"></el-input>
-        </el-form-item>
-        <el-form-item label="备注">
-          <el-input v-model="dialog.form.description" :readonly="dialog.isDetail"
-                    type="textarea"
-                    :rows="3"
-                    placeholder="请输入内容"></el-input>
-        </el-form-item>
-      </el-form>
-      <div class="dialog-footer">
-        <template v-if="dialog.isDetail">
-          <el-button type="primary" @click="dialogFormCancel">关 闭</el-button>
-        </template>
-        <template v-else>
-          <el-button @click="dialogFormCancel">取 消</el-button>
-          <el-button type="primary" @click="dialogFormSubmit">提 交</el-button>
-        </template>
-      </div>
+    <kalix-dialog ref="kalixDialog"
+                  :form-name="'kalixScheduleDitDialogForm'"
+                  :hander-button-cancle="'dialogFormCancel'"
+                  :hander-button-submit="'dialogFormSubmit'">
+      <kalix-dialog-form slot="dialog-container"
+                         ref="kalixScheduleDitDialogForm"
+                         @dialogFormCancel="()=>{$refs.kalixDialog.close()}"
+                         @refreshData="()=>{$refs.myWrapper.refresh()}"></kalix-dialog-form>
     </kalix-dialog>
-
   </div>
 </template>
 
 <script type="text/ecmascript-6">
   import {getDC} from 'api/base'
   import {ScheduleDicts, ScheduleDictsTypesList, PageConfig} from 'api/config'
-  //  import {ScheduleDicts, PageConfig, ScheduleDictsTypesList} from 'api/config'
   import {strToUnicode} from 'unit/unicode-convert'
   import axiosRequest from 'axiosjs/axios-request'
   import Message from 'js/message'
-  //  import MyTableMethods from 'js/MyTableMethods'
   import KalixTableButtons from 'comm/Wrapper/KalixTableButtons.vue'
   import KalixTable from 'comm/KalixTable/KalixTable'
   import KalixPager from 'comm/KalixPager/KalixPager'
+  import KalixTableColumns from './ScheduleDictTableColumns.vue'
+  import KalixScheduleDitDialogForm from './ScheduleDitDialogForm.vue'
 
   let dialogFormTypes = []
 
@@ -154,16 +115,9 @@
     created() {
       this.tableIsScroll = true
       this.roleUrl = ScheduleDicts
-      this.roleColData = [
-        {prop: 'type', label: '类型', width: 180},
-        {prop: 'label', label: '签名', width: 180},
-        {prop: 'value', label: '数值', width: 70},
-        {prop: 'createBy', label: '创建人', width: 120},
-        {prop: 'creationDate', label: '创建日期'}
-      ]
-      this.btnOption = ['btnEdit', 'btnDelete', 'btnView']
       this.defaultDialogForm = JSON.parse(JSON.stringify(this.$data.dialog.form))
       this.requestData = {}
+      this.dataDeleteUrl = ScheduleDicts
     },
     mounted() {
     },
@@ -172,15 +126,15 @@
         // 查询
         let that = this
         if (that.search.form.type.length > 0) {
-          that.search.obj = {jsonStr: '{"%type%": "' + strToUnicode(that.search.form.type) + '"}'}
-          that.$refs.myWrapper.getDataList(true)
+          that.requestData = {jsonStr: '{"%type%": "' + strToUnicode(that.search.form.type) + '"}'}
+          that.$refs.myWrapper.refresh()
         }
       },
       resetSearchForm() {
         // 重置搜索框
         this.search.obj = {}
         this.$refs.searchForm.resetFields()
-        this.$refs.myWrapper.getDataList(true)
+        this.$refs.myWrapper.refresh()
       },
       addData() {
         // 打开对话框
@@ -251,7 +205,7 @@
           }
         }).then(response => {
           Message.success(response.data.msg)
-          this.$refs.kalixTable.refresh()
+          this.$emit('refreshData')
         })
       },
       _getTypes() {
@@ -296,7 +250,9 @@
     components: {
       KalixTableButtons,
       KalixTable,
-      KalixPager
+      KalixPager,
+      KalixTableColumns,
+      KalixDialogForm: KalixScheduleDitDialogForm
     }
   }
 </script>

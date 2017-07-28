@@ -7,16 +7,13 @@
       </div>
       <div class="container" ref="wrapperContainer">
         <kalix-table ref="kalixTable"
-                     :targetUrl="dataUrl"
-                     :btnOption="btnOption"
-                     :isScroll="tableIsScroll"
-                     :requestData="requestData"
-                     :currentPage="pager.currentPage"
+                     :target-url="dataUrl"
+                     :btn-option="btnOption"
+                     :is-scroll="tableIsScroll"
+                     :request-data="requestData"
+                     :current-page="pager.currentPage"
                      :limit="pager.limit"
                      :height="tableHegiht"
-                     @tableView="tableView"
-                     @tableEdit="tableEdit"
-                     @tableDelete="tableDelete"
                      @getTotalCount="setTotalCount"
         >
           <template slot="tableColumn">
@@ -86,18 +83,20 @@
       this.setTableHeight()
     },
     methods: {
+      refresh() {
+        this.$refs.kalixTable.refresh()
+      },
       setTableHeight() {
         this.tableHegiht = this.$refs.wrapperContainer.scrollHeight
       },
       pagerSizeChange(val) {
         //  改变每页记录数
         this.pager.limit = val
-        this.$refs.kalixTable.refresh()
+        this.pager.currentPage = 1
       },
       pagerCurrentChange(val) {
         //  翻页
         this.pager.currentPage = val
-        this.$refs.kalixTable.refresh()
       },
       tableRowClassName(row, index) {
         // 设置行样式
