@@ -96,7 +96,6 @@
         this.$emit('dialogFormCancel')
       },
       dialogFormSubmit () {
-//        console.log(this.$parent.$refs.kalixDialog.close())
 //        提交对话框
         let that = this
         that.$refs.dialogForm.validate((valid) => {

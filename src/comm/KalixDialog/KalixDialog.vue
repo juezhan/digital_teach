@@ -17,10 +17,6 @@
 <script type="text/ecmascript-6">
   export default {
     props: {
-      isView: {
-        type: Boolean,
-        default: false
-      },
       formName: {
         type: String,
         default: ''
@@ -37,7 +33,8 @@
     data() {
       return {
         title: '',
-        visible: false
+        visible: false,
+        isView: false
       }
     },
     created() {
@@ -48,9 +45,12 @@
     activated() {
     },
     methods: {
-      open(title) {
+      open(title, isView) {
         this.title = title
         this.visible = true
+        if (isView) {
+          this.isView = isView
+        }
       },
       close() {
         this.visible = false
@@ -65,7 +65,7 @@
       },
       clickSubmit () {
         let targetForm = this.$parent.$refs[this.formName]
-        if (targetForm._events[this.handerButtonSubmit]) {
+        if (typeof (targetForm[this.handerButtonSubmit]) === 'function') {
           targetForm[this.handerButtonSubmit]()
         }
       }
