@@ -1,7 +1,7 @@
 <template>
   <el-form ref="dialogForm" :model="form" :rules="rules" :label-width="labelWidth">
-    <el-form-item v-if="isDetail" label="类型" prop="type">
-      <el-input v-model="form.type" :readonly="isDetail" auto-complete="off"></el-input>
+    <el-form-item v-if="isView" label="类型" prop="type">
+      <el-input v-model="form.type" :readonly="isView" auto-complete="off"></el-input>
     </el-form-item>
     <el-form-item v-else label="类型" prop="type">
       <el-select v-model="form.type">
@@ -11,11 +11,11 @@
     </el-form-item>
     <el-form-item label="标签名" prop="label">
       <input type="hidden" v-model="form.id"/>
-      <el-input v-model="form.label" placeholder="请输入标签名" :readonly="isDetail"
+      <el-input v-model="form.label" placeholder="请输入标签名" :readonly="isView"
                 auto-complete="off"></el-input>
     </el-form-item>
     <el-form-item label="备注">
-      <el-input v-model="form.description" :readonly="isDetail"
+      <el-input v-model="form.description" :readonly="isView"
                 type="textarea"
                 :rows="3"
                 placeholder="请输入内容"></el-input>
@@ -37,7 +37,7 @@
         type: String,
         default: '80px'
       },
-      isDetail: {
+      isView: {
         type: Boolean,
         default: false
       }

@@ -25,11 +25,11 @@
         type: String,
         default: ''
       },
-      handerButtonCancle: {
+      handlerButtonCancel: {
         type: String,
         default: 'dialogFormCancel'
       },
-      handerButtonSubmit: {
+      handlerButtonSubmit: {
         type: String,
         default: 'dialogFormSubmit'
       }
@@ -57,16 +57,16 @@
       },
       clickCancel () {
         let targetForm = this.$parent.$refs[this.formName]
-        if (targetForm._events[this.handerButtonCancle]) {
-          targetForm[this.handerButtonCancle]()
+        if (targetForm._events[this.handlerButtonCancel]) {
+          targetForm[this.handlerButtonCancel]()
         } else {
           this.close()
         }
       },
       clickSubmit () {
         let targetForm = this.$parent.$refs[this.formName]
-        if (targetForm._events[this.handerButtonSubmit]) {
-          targetForm[this.handerButtonSubmit]()
+        if (targetForm._events[this.handlerButtonSubmit]) {
+          targetForm[this.handlerButtonSubmit]()
         }
       }
     }
