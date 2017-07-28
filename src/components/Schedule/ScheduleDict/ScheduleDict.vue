@@ -28,9 +28,9 @@
     </kalix-wrapper>
     <!-- 对话框 -->
     <kalix-dialog ref="kalixDialog"
-                  :form-name="'kalixScheduleDitDialogForm'">
+                  :form-name="'kalixScheduleDitDialogForm'" :formModel="formModel" :rules="rules" :data-url="dataUrl">
       <kalix-dialog-form slot="dialog-container"
-                         ref="kalixScheduleDitDialogForm"
+                         ref="kalixScheduleDitDialogForm" :formModel="formModel"
                          @dialogFormCancel="()=>{$refs.kalixDialog.close()}"
                          @refreshData="()=>{$refs.myWrapper.refresh()}"></kalix-dialog-form>
     </kalix-dialog>
@@ -65,6 +65,21 @@
               {validator: validateType, trigger: 'blur'}
             ]
           }
+        },
+        formModel: {
+          id: 0,
+          type: '',
+          label: '',
+          description: '',
+          types: []
+        },
+        // 对话框表单验证项
+        rules: {
+          type: [
+            {required: true, message: '请选择类型', trigger: 'blur'}
+          ],
+          label: [
+            {required: true, message: '请输入标签名', trigger: 'blur'}]
         }
       }
     },

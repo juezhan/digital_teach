@@ -1,7 +1,9 @@
 <template>
   <el-dialog :title="title" :visible="visible" class="dialog-form"
              :before-close="close">
-    <slot name="dialog-container"></slot>
+    <el-form ref="dialogForm">
+      <slot name="dialog-container"></slot>
+    </el-form>
     <div slot="footer" class="dialog-footer">
       <template v-if="isView">
         <el-button type="primary" @click="clickCancel">关 闭</el-button>
@@ -15,11 +17,26 @@
 </template>
 
 <script type="text/ecmascript-6">
+  import Message from 'js/message'
+  import axiosRequest from 'axiosjs/axios-request'
+
   export default {
     props: {
-      isView: {
-        type: Boolean,
-        default: false
+      dataUrl: {
+        type: String,
+        required: true
+      },
+      formModel: {
+        type: Object,
+        required: true
+      },
+      rules: {
+        type: Object,
+        required: true
+      },
+      labelWidth: {
+        type: String,
+        default: '80px'
       },
       formName: {
         type: String,
@@ -71,7 +88,36 @@
         let targetForm = this.$parent.$refs[this.formName]
         if (typeof (targetForm[this.handlerButtonSubmit]) === 'function') {
           targetForm[this.handlerButtonSubmit]()
+          return
         }
+        let that = this
+        that.$refs.dialogForm.validate((valid) => {
+          if (valid) {
+            let _data = {
+              id: that.formModel.id,
+              description: that.formModel.description,
+              label: that.formModel.label,
+              type: that.formModel.type
+            }
+            axiosRequest.post({
+              url: this.dataUrl,
+              data: _data
+            }).then(response => {
+              if (response.data.success) {
+                Message.success(response.data.msg)
+                // 关闭对话框
+                that.dialogFormCancel()
+                // 刷新列表
+                this.$emit('refreshData')
+              } else {
+                Message.error(response.data.msg)
+              }
+            })
+          } else {
+            Message.error('')
+            return false
+          }
+        })
       }
     }
   }
