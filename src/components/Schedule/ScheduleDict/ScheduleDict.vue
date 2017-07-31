@@ -29,10 +29,8 @@
     </kalix-wrapper>
     <!-- 对话框 -->
     <kalix-dialog ref="kalixDialog"
-                  :form-model="formModel"
-                  :form-name="'kalixScheduleDitDialogForm'" :rules="rules" :data-url="dataUrl"
-                  @refreshData="()=>{$refs.myWrapper.refresh()}"
-                  @resetDialogForm="resetDialogForm">
+                  :form-name="'kalixScheduleDitDialogForm'" :formModel="formModel" :rules="rules" :data-url="dataUrl"
+                  @refreshData="()=>{$refs.myWrapper.refresh()}">
       <kalix-dialog-form slot="dialog-container"
                          ref="kalixScheduleDitDialogForm" :formModel="formModel"></kalix-dialog-form>
     </kalix-dialog>
