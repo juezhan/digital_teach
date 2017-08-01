@@ -4,7 +4,7 @@
       <el-input v-model="formModel.type" :readonly="isView" auto-complete="off"></el-input>
     </el-form-item>
     <el-form-item v-else label="类型" prop="type">
-      <el-select v-model="formModel.type">
+      <el-select v-model="formModel.type" @visible-change="visibleChange">
         <el-option v-for="item in formModel.types" :key="item.name" :label="item.name"
                    :value="item.name"></el-option>
       </el-select>
@@ -52,6 +52,8 @@
     },
     methods: {
       init() {
+      },
+      visibleChange() {
         this._getTypes()
       },
       _getTypes() {
