@@ -146,6 +146,7 @@
         }, 20)
       },
       tableView(row) {
+        console.log('row')
         if (this._events[CLICK_TABLE_VIEW]) {
           this.$emit(CLICK_TABLE_VIEW, row)
         }

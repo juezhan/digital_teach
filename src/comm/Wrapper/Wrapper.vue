@@ -15,6 +15,8 @@
                      :limit="pager.limit"
                      :height="tableHegiht"
                      @getTotalCount="setTotalCount"
+                     @tableView="tableView"
+                     @tableEdit="tableEdit"
         >
           <template slot="tableColumn">
             <slot name="container"></slot>
@@ -98,6 +100,7 @@
         return this.$parent.rowClassName && this.$parent.rowClassName(row, index)
       },
       tableView(row) {
+        console.log('Wrapper TableView')
         this.$emit('tableView', row)
       },
       tableEdit(row) {

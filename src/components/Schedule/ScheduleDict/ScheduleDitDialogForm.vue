@@ -31,10 +31,6 @@
 
   export default {
     props: {
-      isView: {
-        type: Boolean,
-        default: false
-      },
       formModel: {
         type: Object
       }
@@ -42,6 +38,7 @@
     data() {
       return {
         // 对话框表单
+        isView: false
       }
     },
     mounted() {
@@ -51,7 +48,11 @@
     updated() {
     },
     methods: {
-      init() {
+      init(isView) {
+//        console.log('init')
+        if (isView) {
+          this.isView = isView
+        }
       },
       visibleChange() {
         this._getTypes()

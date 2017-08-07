@@ -18,7 +18,10 @@
     </search>
     <kalix-wrapper ref='myWrapper' title="字典列表" icon="iconfont icon-dict-management"
                    :data-url="dataUrl"
-                   :request-data="requestData">
+                   :request-data="requestData"
+                   @tableView="tableView"
+                   @tableEdit="tableEdit"
+    >
       <!-- 按钮 -->
       <div slot="toolbar">
         <el-button @click="addData" type="primary"><i class="iconfont icon-add"></i>添加</el-button>
@@ -113,6 +116,22 @@
       resetDialogForm() {
         // 清空form
         this.formModel = JSON.parse(this.tempFormModel)
+      },
+      tableView(row) {
+        this.formModel.id = row.id
+        this.formModel.type = row.type
+        this.formModel.label = row.label
+        this.formModel.description = row.description
+        // 打开对话框
+        this.$refs.kalixDialog.open('查看', true)
+      },
+      tableEdit(row) {
+        this.formModel.id = row.id
+        this.formModel.type = row.type
+        this.formModel.label = row.label
+        this.formModel.description = row.description
+        // 打开对话框
+        this.$refs.kalixDialog.open('修改')
       }
     },
     components: {

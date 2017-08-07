@@ -75,7 +75,7 @@
         }
         setTimeout(() => {
           let targetForm = this.$parent.$refs[this.formName]
-          targetForm.init()
+          targetForm.init(isView)
         }, 20)
       },
       close() {
