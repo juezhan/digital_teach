@@ -95,3 +95,10 @@
 
 ## 网站
 [前端资源库](https://www.awesomes.cn/)
+
+# 安装和运行
+>  npm i -g yarn
+
+> yarn
+
+> yarn run dev
