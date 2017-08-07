@@ -1,12 +1,12 @@
-<template>
-  <div id="app">
-    <router-view></router-view>
-  </div>
+<template lang="pug" src="./App.pug">
+
 </template>
 
 <script>
+  import {name} from './App.toml'
+
   export default {
-    name: 'app'
+    name: name
   }
 </script>
 
