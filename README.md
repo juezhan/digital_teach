@@ -27,7 +27,7 @@
 
 ## JS 相关
 
-### Lodash 
+### Lodash
 这是一个具有一致接口、模块化、高性能等特性的 JavaScript 工具库。
 [Lodash 中文](http://lodashjs.com/)
 [Lodash 简书](http://www.jianshu.com/p/7436e40ac5d1)
@@ -39,7 +39,7 @@
 
 ## JSON数据生成 相关
 
-### mockjs 
+### mockjs
 [mockjs Demo](https://www.v2ex.com/t/365568)
 [API](http://mockjs.com/examples.html)
 [前端虚拟接口mockjs的使用](http://www.jianshu.com/p/27b2767b4193)
@@ -54,7 +54,7 @@
 
 ## 配置文件 相关
 
-### TOML 
+### TOML
 配置文件的使用由来已久，从.ini、XML、JSON、YAML再到TOML，语言的表达能力越来越强，同时书写便捷性也在不断提升。 TOML是前GitHub CEO， Tom Preston-Werner，于2013年创建的语言，其目标是成为一个小规模的易于使用的语义化配置文件格式。TOML被设计为可以无二义性的转换为一个哈希表(Hash table)。
 [TOML 简介](http://mlworks.cn/posts/introduction-to-toml/)
 
@@ -82,12 +82,12 @@
 ---
 
 ### 颜色
-## brandcolors 
+## brandcolors
 [brandcolors](https://brandcolors.net/)
 
 ### iconfont 图标字体
 
-## 淘宝图标库 
+## 淘宝图标库
 [淘宝图标库](http://www.iconfont.cn/)
 
 ## icomoon
@@ -106,3 +106,10 @@
 > yarn
 
 > yarn run dev
+
+# 技术栈
+## pug
+> https://github.com/pugjs/pug
+
+> https://segmentfault.com/a/1190000000357534
+
