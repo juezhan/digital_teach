@@ -96,6 +96,10 @@
 ## 网站
 [前端资源库](https://www.awesomes.cn/)
 
+# 相关重要资料
+1. https://github.com/molysama/vue-learn
+
+
 # 安装和运行
 >  npm i -g yarn
 
